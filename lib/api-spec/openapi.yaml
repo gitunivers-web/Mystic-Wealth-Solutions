@@ -182,8 +182,10 @@ components:
 
     SiteSettings:
       type: object
-      required: [phone, whatsapp, address, email, web3formsKey, heroImage, aboutImage, ceremonyImages]
+      required: [siteName, phone, whatsapp, address, email, web3formsKey, heroImage, aboutImage, ceremonyImages, ritualImages]
       properties:
+        siteName:
+          type: string
         phone:
           type: string
         whatsapp:
@@ -202,10 +204,16 @@ components:
           type: array
           items:
             type: string
+        ritualImages:
+          type: array
+          items:
+            type: string
 
     SiteSettingsUpdate:
       type: object
       properties:
+        siteName:
+          type: string
         phone:
           type: string
         whatsapp:
@@ -221,6 +229,10 @@ components:
         aboutImage:
           type: string
         ceremonyImages:
+          type: array
+          items:
+            type: string
+        ritualImages:
           type: array
           items:
             type: string

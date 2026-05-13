@@ -11,12 +11,13 @@ import { WhatsAppWidget } from "@/components/layout/whatsapp-widget";
 import Home from "@/pages/home";
 import Services from "@/pages/services";
 import Contact from "@/pages/contact";
+import Rituels from "@/pages/rituels";
+import Avis from "@/pages/avis";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 
 const queryClient = new QueryClient();
 
-// Only show layout elements on public pages
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
@@ -35,12 +36,14 @@ function Router() {
     <Switch>
       <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
-      
+
       <Route>
         <AppLayout>
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/services" component={Services} />
+            <Route path="/rituels" component={Rituels} />
+            <Route path="/avis" component={Avis} />
             <Route path="/contact" component={Contact} />
             <Route component={NotFound} />
           </Switch>

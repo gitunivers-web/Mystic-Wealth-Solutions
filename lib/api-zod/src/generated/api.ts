@@ -41,6 +41,7 @@ export const AdminLogoutResponse = zod.object({
  * @summary Get site settings
  */
 export const GetSettingsResponse = zod.object({
+  siteName: zod.string(),
   phone: zod.string(),
   whatsapp: zod.string(),
   address: zod.string(),
@@ -49,12 +50,14 @@ export const GetSettingsResponse = zod.object({
   heroImage: zod.string(),
   aboutImage: zod.string(),
   ceremonyImages: zod.array(zod.string()),
+  ritualImages: zod.array(zod.string()),
 });
 
 /**
  * @summary Update site settings (admin only)
  */
 export const UpdateSettingsBody = zod.object({
+  siteName: zod.string().optional(),
   phone: zod.string().optional(),
   whatsapp: zod.string().optional(),
   address: zod.string().optional(),
@@ -63,9 +66,11 @@ export const UpdateSettingsBody = zod.object({
   heroImage: zod.string().optional(),
   aboutImage: zod.string().optional(),
   ceremonyImages: zod.array(zod.string()).optional(),
+  ritualImages: zod.array(zod.string()).optional(),
 });
 
 export const UpdateSettingsResponse = zod.object({
+  siteName: zod.string(),
   phone: zod.string(),
   whatsapp: zod.string(),
   address: zod.string(),
@@ -74,6 +79,7 @@ export const UpdateSettingsResponse = zod.object({
   heroImage: zod.string(),
   aboutImage: zod.string(),
   ceremonyImages: zod.array(zod.string()),
+  ritualImages: zod.array(zod.string()),
 });
 
 /**

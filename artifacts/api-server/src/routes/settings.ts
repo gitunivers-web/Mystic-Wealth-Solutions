@@ -10,6 +10,7 @@ import {
 const router = Router();
 
 const DEFAULT_SETTINGS: Record<string, string> = {
+  siteName: "Maître Séraphin",
   phone: "+22670000000",
   whatsapp: "+22670000000",
   address: "Ouagadougou, Burkina Faso",
@@ -18,6 +19,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   heroImage: "",
   aboutImage: "",
   ceremonyImages: "[]",
+  ritualImages: "[]",
 };
 
 async function getSettingsMap(): Promise<Record<string, string>> {
@@ -31,12 +33,11 @@ async function getSettingsMap(): Promise<Record<string, string>> {
 
 function mapToSettings(map: Record<string, string>) {
   let ceremonyImages: string[] = [];
-  try {
-    ceremonyImages = JSON.parse(map.ceremonyImages || "[]");
-  } catch {
-    ceremonyImages = [];
-  }
+  try { ceremonyImages = JSON.parse(map.ceremonyImages || "[]"); } catch { ceremonyImages = []; }
+  let ritualImages: string[] = [];
+  try { ritualImages = JSON.parse(map.ritualImages || "[]"); } catch { ritualImages = []; }
   return {
+    siteName: map.siteName,
     phone: map.phone,
     whatsapp: map.whatsapp,
     address: map.address,
@@ -45,6 +46,7 @@ function mapToSettings(map: Record<string, string>) {
     heroImage: map.heroImage,
     aboutImage: map.aboutImage,
     ceremonyImages,
+    ritualImages,
   };
 }
 
@@ -80,9 +82,11 @@ router.patch("/settings", async (req, res) => {
     if (body.address !== undefined) updates.push(["address", body.address]);
     if (body.email !== undefined) updates.push(["email", body.email]);
     if (body.web3formsKey !== undefined) updates.push(["web3formsKey", body.web3formsKey]);
+    if (body.siteName !== undefined) updates.push(["siteName", body.siteName]);
     if (body.heroImage !== undefined) updates.push(["heroImage", body.heroImage]);
     if (body.aboutImage !== undefined) updates.push(["aboutImage", body.aboutImage]);
     if (body.ceremonyImages !== undefined) updates.push(["ceremonyImages", JSON.stringify(body.ceremonyImages)]);
+    if (body.ritualImages !== undefined) updates.push(["ritualImages", JSON.stringify(body.ritualImages)]);
 
     for (const [key, value] of updates) {
       const existing = await db.select().from(siteSettingsTable).where(eq(siteSettingsTable.key, key));

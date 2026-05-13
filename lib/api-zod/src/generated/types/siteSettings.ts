@@ -7,6 +7,7 @@
  */
 
 export interface SiteSettings {
+  siteName: string;
   phone: string;
   whatsapp: string;
   address: string;
@@ -15,4 +16,5 @@ export interface SiteSettings {
   heroImage: string;
   aboutImage: string;
   ceremonyImages: string[];
+  ritualImages: string[];
 }
