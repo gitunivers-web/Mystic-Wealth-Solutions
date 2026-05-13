@@ -29,6 +29,8 @@ export interface SiteSettings {
   aboutImage: string;
   ceremonyImages: string[];
   ritualImages: string[];
+  videoUrl?: string;
+  videoTitle?: string;
 }
 
 export interface SiteSettingsUpdate {
@@ -42,6 +44,8 @@ export interface SiteSettingsUpdate {
   aboutImage?: string;
   ceremonyImages?: string[];
   ritualImages?: string[];
+  videoUrl?: string;
+  videoTitle?: string;
 }
 
 export interface ContactInput {

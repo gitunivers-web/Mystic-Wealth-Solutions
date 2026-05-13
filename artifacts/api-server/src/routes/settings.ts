@@ -10,16 +10,18 @@ import {
 const router = Router();
 
 const DEFAULT_SETTINGS: Record<string, string> = {
-  siteName: "Maître Séraphin",
-  phone: "+22670000000",
-  whatsapp: "+22670000000",
-  address: "Ouagadougou, Burkina Faso",
-  email: "contact@maitre-seraphin.com",
+  siteName: "Maître Zonon 666",
+  phone: "+22968075372",
+  whatsapp: "+22968075372",
+  address: "Quartier Missérété, Lokossa — Bénin",
+  email: "contact@maitrezonon666.com",
   web3formsKey: "",
   heroImage: "",
   aboutImage: "",
   ceremonyImages: "[]",
   ritualImages: "[]",
+  videoUrl: "",
+  videoTitle: "Le Maître en Action — Voyez la Puissance à l'Œuvre",
 };
 
 async function getSettingsMap(): Promise<Record<string, string>> {
@@ -47,6 +49,8 @@ function mapToSettings(map: Record<string, string>) {
     aboutImage: map.aboutImage,
     ceremonyImages,
     ritualImages,
+    videoUrl: map.videoUrl,
+    videoTitle: map.videoTitle,
   };
 }
 
@@ -77,16 +81,18 @@ router.patch("/settings", async (req, res) => {
     const body = UpdateSettingsBody.parse(req.body);
 
     const updates: [string, string][] = [];
+    if (body.siteName !== undefined) updates.push(["siteName", body.siteName]);
     if (body.phone !== undefined) updates.push(["phone", body.phone]);
     if (body.whatsapp !== undefined) updates.push(["whatsapp", body.whatsapp]);
     if (body.address !== undefined) updates.push(["address", body.address]);
     if (body.email !== undefined) updates.push(["email", body.email]);
     if (body.web3formsKey !== undefined) updates.push(["web3formsKey", body.web3formsKey]);
-    if (body.siteName !== undefined) updates.push(["siteName", body.siteName]);
     if (body.heroImage !== undefined) updates.push(["heroImage", body.heroImage]);
     if (body.aboutImage !== undefined) updates.push(["aboutImage", body.aboutImage]);
     if (body.ceremonyImages !== undefined) updates.push(["ceremonyImages", JSON.stringify(body.ceremonyImages)]);
     if (body.ritualImages !== undefined) updates.push(["ritualImages", JSON.stringify(body.ritualImages)]);
+    if (body.videoUrl !== undefined) updates.push(["videoUrl", body.videoUrl]);
+    if (body.videoTitle !== undefined) updates.push(["videoTitle", body.videoTitle]);
 
     for (const [key, value] of updates) {
       const existing = await db.select().from(siteSettingsTable).where(eq(siteSettingsTable.key, key));

@@ -1,2 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/dashboard
+
+Sitemap: https://www.maitrezonon666.com/sitemap.xml

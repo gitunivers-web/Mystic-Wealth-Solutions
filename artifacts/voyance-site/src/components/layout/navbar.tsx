@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useGetSettings } from "@workspace/api-client-react";
 import { Menu, X } from "lucide-react";
+import { Logo } from "./logo";
 
 export function Navbar() {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
   const { data: settings } = useGetSettings();
-  const siteName = settings?.siteName || "Maître Séraphin";
+  const siteName = settings?.siteName || "Maître Zonon 666";
 
   const navItems = [
     { label: "Accueil", path: "/" },
@@ -20,14 +21,15 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/90 backdrop-blur-md">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="font-serif text-xl md:text-2xl font-bold tracking-wider text-primary">
-            {siteName.toUpperCase()}
+        <Link href="/" className="flex items-center gap-3 group" onClick={() => setOpen(false)} data-testid="nav-logo">
+          <Logo size={34} />
+          <span className="font-serif text-lg md:text-xl font-bold tracking-wider text-primary leading-tight">
+            {siteName}
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-5 lg:gap-7">
           {navItems.map((item) => (
             <Link
               key={item.path}
@@ -43,7 +45,7 @@ export function Navbar() {
             <a
               href={`tel:${settings.phone}`}
               data-testid="nav-phone"
-              className="px-5 py-2 border border-primary/30 text-primary hover:bg-primary/10 transition-colors uppercase tracking-widest text-xs font-semibold"
+              className="px-5 py-2 border border-primary/40 text-primary hover:bg-primary hover:text-background transition-all uppercase tracking-widest text-xs font-bold"
             >
               {settings.phone}
             </a>
@@ -55,6 +57,7 @@ export function Navbar() {
           className="md:hidden text-primary p-2"
           onClick={() => setOpen(!open)}
           data-testid="nav-mobile-toggle"
+          aria-label="Menu"
         >
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -62,13 +65,13 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-background border-t border-white/5 py-6 px-4 flex flex-col gap-5">
+        <div className="md:hidden bg-background/95 backdrop-blur border-t border-white/5 py-6 px-4 flex flex-col gap-5">
           {navItems.map((item) => (
             <Link
               key={item.path}
               href={item.path}
               onClick={() => setOpen(false)}
-              className={`text-sm uppercase tracking-widest font-medium transition-colors hover:text-primary ${
+              className={`text-sm uppercase tracking-widest font-medium transition-colors hover:text-primary py-1 ${
                 location === item.path ? "text-primary" : "text-muted-foreground"
               }`}
             >
@@ -78,9 +81,9 @@ export function Navbar() {
           {settings?.phone && (
             <a
               href={`tel:${settings.phone}`}
-              className="inline-block mt-2 px-5 py-3 border border-primary/30 text-primary text-center uppercase tracking-widest text-xs font-semibold"
+              className="mt-2 px-5 py-3 border border-primary/40 text-primary text-center uppercase tracking-widest text-xs font-bold"
             >
-              {settings.phone}
+              Appeler : {settings.phone}
             </a>
           )}
         </div>

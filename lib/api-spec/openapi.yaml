@@ -208,6 +208,10 @@ components:
           type: array
           items:
             type: string
+        videoUrl:
+          type: string
+        videoTitle:
+          type: string
 
     SiteSettingsUpdate:
       type: object
@@ -236,6 +240,10 @@ components:
           type: array
           items:
             type: string
+        videoUrl:
+          type: string
+        videoTitle:
+          type: string
 
     ContactInput:
       type: object

@@ -17,4 +17,6 @@ export interface SiteSettings {
   aboutImage: string;
   ceremonyImages: string[];
   ritualImages: string[];
+  videoUrl?: string;
+  videoTitle?: string;
 }

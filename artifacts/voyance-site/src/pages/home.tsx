@@ -1,41 +1,116 @@
-import { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { useGetSettings } from "@workspace/api-client-react";
+import { Phone, MessageCircle, Star, Shield, Zap, Heart } from "lucide-react";
 
 const services = [
-  { title: "Retour affectif", desc: "Retrouver un amour perdu, réconciliation de couples séparés." },
-  { title: "Rituel de richesse", desc: "Sa spécialité absolue : rendre une personne riche par les forces mystiques. Résultats garantis." },
-  { title: "Protection spirituelle", desc: "Bouclier mystique permanent contre les ennemis et les mauvaises énergies." },
-  { title: "Problèmes de travail", desc: "Promotion professionnelle, protection contre les jaloux, succès au travail." },
+  { icon: Zap, title: "Rituel de Richesse", desc: "Sa spécialité absolue. Par les forces mystiques ancestrales, il brise les blocages financiers et fait affluer l'abondance en 15 à 30 jours.", urgent: true },
+  { icon: Heart, title: "Retour Affectif", desc: "Même les séparations les plus désespérées ont été résolues. Le rituel ravive le lien invisible qui unit deux âmes en 7 à 21 jours." },
+  { icon: Shield, title: "Protection Totale", desc: "Un bouclier mystique permanent érigé autour de vous. Aucune force négative, aucun sort, aucun ennemi ne peut vous atteindre." },
+  { icon: Star, title: "Infertilité Spirituelle", desc: "Les blocages invisibles sont souvent la vraie cause. Après le rituel, des milliers de naissances ont eu lieu dans les mois suivants." },
 ];
 
-const testimonials = [
-  { name: "Aminata C.", pays: "Côte d'Ivoire", text: "Mon commerce était mort. Après le rituel de richesse, un investisseur m'a contactée. Aujourd'hui j'exporte dans toute l'Afrique. Merci infiniment, Maître." },
-  { name: "Moussa T.", pays: "Burkina Faso", text: "Ma boutique ne vendait plus rien depuis 8 mois. Après la consultation, une grande entreprise m'a contacté pour un contrat. Tout a changé." },
-  { name: "Fatoumata D.", pays: "Guinée", text: "Mon mari était parti avec une autre. En 9 jours, il est revenu en pleurant. Notre famille est réunie et plus forte que jamais." },
-  { name: "Ibrahima S.", pays: "Sénégal", text: "Depuis la protection du Maître, mes affaires prospèrent et ceux qui voulaient ma perte ont disparu d'eux-mêmes." },
-  { name: "Awa K.", pays: "Mali", text: "Six ans de mariage sans enfant. Maître Séraphin a identifié un blocage spirituel. Quatre mois après, j'étais enceinte. Je remercie le ciel chaque jour." },
-  { name: "Seydou O.", pays: "Burkina Faso", text: "Bloqué au même poste depuis 7 ans. Le Maître a vu la jalousie autour de moi. Deux mois après, j'avais ma promotion et une augmentation." },
-  { name: "Kadiatou B.", pays: "Guinée", text: "J'ai eu l'idée de créer ma boutique en ligne après le rituel. En moins d'un an, je vends dans toute l'Afrique de l'Ouest." },
-  { name: "Adama K.", pays: "Côte d'Ivoire", text: "Ma femme était partie chez sa famille. En deux semaines, elle m'a appelé d'elle-même. Nous sommes réconciliés et notre couple est aujourd'hui béni." },
+const urgenceStats = [
+  { chiffre: "30 000+", label: "Rituels accomplis" },
+  { chiffre: "98%", label: "Taux de réussite" },
+  { chiffre: "30 ans", label: "D'expertise mystique" },
+  { chiffre: "24h/24", label: "Disponibilité" },
 ];
 
-function AutoScrollCarousel({ images }: { images: string[] }) {
-  const track = [...images, ...images];
+const temoignages = [
+  { name: "Aminata C.", pays: "Côte d'Ivoire", texte: "J'avais des dettes depuis 4 ans. Après le rituel de richesse sur 7 nuits, un investisseur m'a contactée spontanément. Toutes mes dettes sont remboursées." },
+  { name: "Fatoumata D.", pays: "Guinée", texte: "Mon mari était parti depuis 11 mois. Le 9ème jour après le rituel de retour affectif, il a appelé en pleurant et est revenu. Je n'y croyais plus." },
+  { name: "Ibrahima S.", pays: "Sénégal", texte: "Un sort avait été jeté sur mon entreprise. Après le rituel de désenvoûtement et protection, mes affaires ont redémarré en deux semaines. Les ennemis ont disparu." },
+  { name: "Awa K.", pays: "Mali", texte: "6 ans de mariage sans enfant. Le rituel de purification a levé le blocage spirituel. 4 mois après, j'attendais des jumeaux. Miracle absolu." },
+  { name: "Moussa T.", pays: "Burkina Faso", texte: "Ma boutique était morte depuis 8 mois. Après le rituel d'attraction de clientèle, le 10ème jour les clients affluaient. Un contrat géant a suivi." },
+  { name: "Seydou O.", pays: "Burkina Faso", texte: "7 ans bloqué au même poste à cause d'un envoûtement professionnel. Après le rituel de déblocage, j'ai eu ma promotion le mois suivant." },
+  { name: "Rokia C.", pays: "Burkina Faso", texte: "À 38 ans sans mari à cause d'un sort de solitude. 6 semaines après le rituel d'attraction, j'ai rencontré mon futur mari. Nous sommes mariés." },
+  { name: "Boubacar D.", pays: "Mali", texte: "Tout perdu dans une mauvaise affaire. Le rituel de reconstruction financière m'a redonné confiance et chance. En 3 mois, j'avais ma propre maison." },
+];
+
+function HeroCarousel({ images, fallback }: { images: string[]; fallback: string }) {
+  const [idx, setIdx] = useState(0);
+  const all = images.length > 0 ? images : [fallback];
+
+  useEffect(() => {
+    if (all.length <= 1) return;
+    const timer = setInterval(() => setIdx(i => (i + 1) % all.length), 5000);
+    return () => clearInterval(timer);
+  }, [all.length]);
+
+  return (
+    <div className="absolute inset-0 z-0">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={idx}
+          src={all[idx]}
+          alt="Cérémonie mystique"
+          className="absolute inset-0 w-full h-full object-cover opacity-35"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.35 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
+    </div>
+  );
+}
+
+function AutoScrollTestimonials() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let frame: number;
+    let pos = 0;
+    const speed = 0.5;
+    const step = () => {
+      pos += speed;
+      if (pos >= el.scrollWidth / 2) pos = 0;
+      el.scrollLeft = pos;
+      frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+    const pause = () => cancelAnimationFrame(frame);
+    const resume = () => { frame = requestAnimationFrame(step); };
+    el.addEventListener("mouseenter", pause);
+    el.addEventListener("mouseleave", resume);
+    el.addEventListener("touchstart", pause, { passive: true });
+    el.addEventListener("touchend", resume);
+    return () => {
+      cancelAnimationFrame(frame);
+      el.removeEventListener("mouseenter", pause);
+      el.removeEventListener("mouseleave", resume);
+    };
+  }, []);
+  const doubled = [...temoignages, ...temoignages];
+  return (
+    <div ref={ref} className="flex gap-5 overflow-x-hidden cursor-default select-none" style={{ scrollBehavior: "auto" }}>
+      {doubled.map((t, i) => (
+        <div key={i} className="min-w-[290px] md:min-w-[360px] p-7 bg-background border border-white/5 relative flex-shrink-0 hover:border-primary/30 transition-colors">
+          <div className="flex items-center gap-0.5 mb-3">{[...Array(5)].map((_, j) => <span key={j} className="text-primary text-xs">★</span>)}</div>
+          <p className="text-muted-foreground italic mb-5 text-sm leading-relaxed">"{t.texte}"</p>
+          <div className="flex items-center gap-3 border-t border-white/5 pt-4">
+            <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary font-serif font-bold text-sm">{t.name[0]}</div>
+            <div><div className="font-bold text-white text-sm">{t.name}</div><div className="text-xs text-muted-foreground">{t.pays}</div></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AutoScrollGallery({ images }: { images: string[] }) {
+  const doubled = [...images, ...images];
   return (
     <div className="relative w-full overflow-hidden">
-      <div className="flex gap-4 animate-marquee" style={{ width: "max-content" }}>
-        {track.map((img, i) => (
-          <div
-            key={i}
-            className="min-w-[280px] md:min-w-[380px] aspect-square relative group overflow-hidden border border-white/10 flex-shrink-0"
-          >
-            <img
-              src={img}
-              alt={`Cérémonie ${i + 1}`}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
+      <div className="flex gap-3 animate-marquee" style={{ width: "max-content" }}>
+        {doubled.map((img, i) => (
+          <div key={i} className="min-w-[260px] md:min-w-[360px] aspect-square relative group overflow-hidden border border-white/10 flex-shrink-0">
+            <img src={img} alt={`Rituel ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           </div>
         ))}
@@ -44,240 +119,287 @@ function AutoScrollCarousel({ images }: { images: string[] }) {
   );
 }
 
-function TestimonialsCarousel() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let animFrame: number;
-    let pos = 0;
-    const speed = 0.4;
-    const half = el.scrollWidth / 2;
-    const step = () => {
-      pos += speed;
-      if (pos >= half) pos = 0;
-      el.scrollLeft = pos;
-      animFrame = requestAnimationFrame(step);
-    };
-    animFrame = requestAnimationFrame(step);
-    const pause = () => cancelAnimationFrame(animFrame);
-    const resume = () => { animFrame = requestAnimationFrame(step); };
-    el.addEventListener("mouseenter", pause);
-    el.addEventListener("mouseleave", resume);
-    el.addEventListener("touchstart", pause);
-    el.addEventListener("touchend", resume);
-    return () => {
-      cancelAnimationFrame(animFrame);
-      el.removeEventListener("mouseenter", pause);
-      el.removeEventListener("mouseleave", resume);
-      el.removeEventListener("touchstart", pause);
-      el.removeEventListener("touchend", resume);
-    };
-  }, []);
-
-  const doubled = [...testimonials, ...testimonials];
+function VideoSection({ videoUrl, videoTitle }: { videoUrl: string; videoTitle: string }) {
+  const getEmbedUrl = (url: string) => {
+    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+    if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&modestbranding=1`;
+    const vmMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vmMatch) return `https://player.vimeo.com/video/${vmMatch[1]}`;
+    return url;
+  };
 
   return (
-    <div
-      ref={ref}
-      className="flex gap-6 overflow-x-hidden cursor-default select-none"
-      style={{ scrollBehavior: "auto" }}
-    >
-      {doubled.map((t, i) => (
-        <div
-          key={i}
-          className="min-w-[300px] md:min-w-[380px] max-w-[380px] p-8 bg-background border border-white/5 relative flex-shrink-0 hover:border-primary/30 transition-colors"
-        >
-          <div className="text-primary text-4xl font-serif absolute top-4 right-6 opacity-15 select-none">"</div>
-          <p className="text-muted-foreground italic mb-6 relative z-10 leading-relaxed text-sm">"{t.text}"</p>
-          <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-            <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center text-primary font-serif font-bold text-sm">
-              {t.name[0]}
-            </div>
-            <div>
-              <div className="font-bold text-white text-sm">{t.name}</div>
-              <div className="text-xs text-muted-foreground">{t.pays}</div>
-            </div>
+    <section className="py-24 bg-card border-y border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <p className="text-primary tracking-[0.3em] uppercase text-xs font-semibold mb-4">Voyez par vous-même</p>
+          <h3 className="text-4xl font-serif font-bold text-white mb-4">{videoTitle || "Le Maître en Action"}</h3>
+          <p className="text-muted-foreground max-w-xl mx-auto text-sm">Les mots ne suffisent pas. Observez la puissance des rituels ancestraux de Maître Zonon 666 à l'œuvre.</p>
+        </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="relative aspect-video border border-white/10 overflow-hidden shadow-2xl">
+            <div className="absolute inset-0 border border-primary/20 pointer-events-none z-10" />
+            <iframe
+              src={getEmbedUrl(videoUrl)}
+              title={videoTitle || "Rituel Maître Zonon 666"}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
           </div>
         </div>
-      ))}
-    </div>
+        <div className="text-center mt-10">
+          <Link href="/contact" className="inline-block px-8 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors">
+            Je veux ce résultat
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
 
-const FALLBACK_GALLERY = [
+const FALLBACK_IMAGES = [
   "/gallery-1.png", "/gallery-2.png", "/gallery-3.png",
   "/gallery-4.png", "/gallery-5.png", "/gallery-6.png",
 ];
 
 export default function Home() {
   const { data: settings } = useGetSettings();
-  const siteName = settings?.siteName || "Maître Séraphin";
-  const galleryImages = settings?.ceremonyImages?.length ? settings.ceremonyImages : FALLBACK_GALLERY;
+  const siteName = settings?.siteName || "Maître Zonon 666";
+  const phone = settings?.phone || "+22968075372";
+  const whatsapp = settings?.whatsapp || "+22968075372";
+  const galleryImages = settings?.ceremonyImages?.length ? settings.ceremonyImages : FALLBACK_IMAGES;
+  const heroImages = settings?.ceremonyImages?.length ? settings.ceremonyImages : FALLBACK_IMAGES;
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/* Hero */}
-      <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          {settings?.heroImage && (
-            <img
-              src={settings.heroImage}
-              alt="Ceremony"
-              className="w-full h-full object-cover opacity-30 object-center"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-        </div>
+
+      {/* === HERO === */}
+      <section className="relative w-full min-h-[95vh] flex items-center justify-center overflow-hidden">
+        <HeroCarousel images={heroImages} fallback="/hero.png" />
+
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="max-w-4xl mx-auto"
-          >
-            <h2 className="text-primary tracking-[0.3em] uppercase text-xs font-semibold mb-6">Le Guide des Forces Invisibles</h2>
-            <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-8 leading-tight">
-              Transformez Votre Destin par la Puissance Mystique
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }} className="max-w-5xl mx-auto">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-primary tracking-[0.4em] uppercase text-xs font-semibold mb-8">
+              Maître des Forces Invisibles depuis 30 ans
+            </motion.p>
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-white mb-8 leading-[1.05]">
+              Votre Vie<br />
+              <span className="text-primary">Mérite Mieux.</span>
             </h1>
-            <p className="text-xl text-foreground/80 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
-              {siteName} invoque les forces ancestrales pour attirer la richesse,
-              le retour de l'être aimé et la protection absolue.
+            <p className="text-lg md:text-xl text-white/75 mb-6 max-w-2xl mx-auto font-light leading-relaxed">
+              {siteName} possède le don rare d'invoquer les forces mystiques ancestrales pour attirer la richesse, ramener l'être aimé et écraser les obstacles qui bloquent votre destinée.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/contact" className="px-8 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors" data-testid="hero-cta-contact">
-                Demander une Consultation
+            <p className="text-primary/80 text-sm mb-12 font-medium tracking-wide">
+              Résultats en 7 à 30 jours — Discrétion absolue — Consultation à distance disponible
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Link href="/contact" data-testid="hero-cta-contact"
+                className="px-10 py-5 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-all text-sm shadow-lg shadow-primary/20">
+                Demander un Rituel Maintenant
               </Link>
-              <Link href="/services" className="px-8 py-4 border border-primary/50 text-primary font-bold tracking-widest uppercase hover:bg-primary/10 transition-colors" data-testid="hero-cta-services">
-                Découvrir ses Pouvoirs
-              </Link>
+              <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer"
+                className="px-10 py-5 border border-white/20 text-white font-bold tracking-widest uppercase hover:border-primary hover:text-primary transition-all text-sm flex items-center justify-center gap-2">
+                <MessageCircle size={16} />
+                Écrire sur WhatsApp
+              </a>
             </div>
+            <a href={`tel:${phone}`} className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
+              <Phone size={14} />
+              {phone}
+            </a>
           </motion.div>
+        </div>
+
+        {/* scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+          <div className="w-px h-12 bg-primary animate-pulse" />
+          <span className="text-primary text-xs uppercase tracking-widest">Défiler</span>
         </div>
       </section>
 
-      {/* About */}
-      <section className="py-24 w-full bg-background border-t border-white/5">
+      {/* === URGENCE STATS === */}
+      <section className="w-full bg-card border-y border-white/5 py-8">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+            {urgenceStats.map((s, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="text-center py-4">
+                <div className="text-3xl md:text-4xl font-serif font-bold text-primary mb-1">{s.chiffre}</div>
+                <div className="text-xs text-muted-foreground uppercase tracking-widest">{s.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* === ABOUT === */}
+      <section className="py-24 w-full bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative aspect-[3/4] w-full max-w-md mx-auto"
-            >
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative aspect-[3/4] w-full max-w-md mx-auto">
               <div className="absolute inset-0 border border-primary/30 translate-x-4 translate-y-4" />
               {settings?.aboutImage ? (
-                <img
-                  src={settings.aboutImage}
-                  alt={siteName}
-                  className="w-full h-full object-cover relative z-10"
-                />
+                <img src={settings.aboutImage} alt={siteName} className="w-full h-full object-cover relative z-10" />
               ) : (
-                <div className="w-full h-full bg-card relative z-10 flex items-center justify-center">
-                  <span className="text-primary text-6xl font-serif opacity-20">✦</span>
+                <div className="w-full h-full bg-card relative z-10 flex items-center justify-center flex-col gap-4">
+                  <div className="text-primary text-7xl font-serif opacity-20">✦</div>
+                  <p className="text-muted-foreground text-xs uppercase tracking-widest text-center px-8">Portrait du Maître (configurable depuis l'admin)</p>
                 </div>
               )}
+              <div className="absolute -bottom-4 -right-4 z-20 bg-primary text-background px-4 py-3 text-center">
+                <div className="text-2xl font-serif font-bold">30</div>
+                <div className="text-xs uppercase tracking-wider">ans de maîtrise</div>
+              </div>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">L'Héritier</h2>
-              <h3 className="text-4xl font-serif font-bold mb-6 text-white">{siteName}</h3>
-              <div className="space-y-6 text-muted-foreground leading-relaxed font-light">
-                <p>
-                  Guide spirituel de renommée mondiale, {siteName} est l'héritier direct d'une lignée de grands maîtres africains. Avec plus de 30 ans d'expérience dans les sciences occultes et les rituels ancestraux, il a transformé des milliers de vies à travers le monde.
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <h2 className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">L'Héritier des Mystères</h2>
+              <h3 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-white leading-tight">{siteName}</h3>
+              <div className="space-y-5 text-muted-foreground leading-relaxed font-light">
+                <p className="text-base">
+                  Né dans une lignée de grands maîtres spirituels d'Afrique de l'Ouest, {siteName} a reçu son don dès l'enfance. À 16 ans, il accomplissait déjà ses premiers rituels. Aujourd'hui, avec plus de 30 années de pratique intense, il est reconnu comme l'un des plus puissants maîtres du continent.
                 </p>
-                <p>
-                  Sa spécialité unique réside dans sa capacité à invoquer les forces mystiques pour attirer la richesse et l'abondance — un don transmis de génération en génération. Il travaille dans la plus grande discrétion et garantit des résultats concrets.
+                <p className="text-base">
+                  Sa spécialité absolue est le <strong className="text-white">rituel de richesse</strong> — une pratique ancestrale secrète qui brise les blocages financiers, neutralise les malédictions de pauvreté et ouvre les portes de la prospérité en 15 à 30 jours. Des milliers de personnes en Afrique et en Europe lui doivent leur fortune actuelle.
                 </p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 mt-6 border-t border-white/10">
-                  <li className="flex items-center gap-3 text-white"><div className="w-1.5 h-1.5 bg-primary rounded-full" /> Résultats garantis</li>
-                  <li className="flex items-center gap-3 text-white"><div className="w-1.5 h-1.5 bg-primary rounded-full" /> Discrétion absolue</li>
-                  <li className="flex items-center gap-3 text-white"><div className="w-1.5 h-1.5 bg-primary rounded-full" /> 30 ans d'expertise</li>
-                  <li className="flex items-center gap-3 text-white"><div className="w-1.5 h-1.5 bg-primary rounded-full" /> Force ancestrale</li>
-                </ul>
+                <p className="text-white/90 border-l-2 border-primary pl-4 italic">
+                  "Je ne fais pas de promesses en l'air. Je fais des rituels. Et les rituels, eux, ne mentent jamais."
+                  <span className="block text-primary text-xs mt-2 not-italic uppercase tracking-widest">— {siteName}</span>
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-white/10">
+                {["Résultats en 7–30 jours", "Discrétion absolue", "Travail à distance", "Rituels personnalisés"].map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-white text-sm">
+                    <span className="text-primary text-xs">✦</span>{item}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <Link href="/contact" className="px-8 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors text-xs">
+                  Consulter le Maître
+                </Link>
+                <Link href="/rituels" className="px-8 py-4 border border-primary/40 text-primary font-bold tracking-widest uppercase hover:bg-primary/10 transition-colors text-xs">
+                  Voir les Rituels
+                </Link>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Services Preview */}
+      {/* === SERVICES === */}
       <section className="py-24 w-full bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">Domaines d'Intervention</h2>
-            <h3 className="text-4xl font-serif font-bold text-white">L'Art de Changer les Destinées</h3>
+            <p className="text-primary tracking-[0.3em] uppercase text-xs font-semibold mb-4">Ce que le Maître peut faire pour vous</p>
+            <h3 className="text-4xl font-serif font-bold text-white mb-4">Les Rituels Qui Changent les Destinées</h3>
+            <p className="text-muted-foreground max-w-xl mx-auto text-sm">Chaque situation est unique. Chaque rituel est conçu sur mesure. Les résultats sont réels et vérifiables.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-8 border border-white/5 bg-background hover:border-primary/50 transition-colors group cursor-default"
-              >
-                <div className="w-12 h-12 mb-6 text-primary flex items-center justify-center bg-primary/10 rounded-full group-hover:scale-110 transition-transform text-lg">
-                  ✦
-                </div>
-                <h4 className="text-xl font-serif font-bold text-white mb-4">{service.title}</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed">{service.desc}</p>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}
+                  className={`p-8 border hover:border-primary/50 transition-colors group cursor-default relative ${service.urgent ? "border-primary/30 bg-primary/5" : "border-white/5 bg-background"}`}>
+                  {service.urgent && <div className="absolute top-3 right-3 text-xs text-primary border border-primary/30 px-2 py-0.5 uppercase tracking-widest">Spécialité</div>}
+                  <div className="w-12 h-12 mb-6 flex items-center justify-center bg-primary/10 rounded-full group-hover:bg-primary/20 transition-colors">
+                    <Icon size={20} className="text-primary" />
+                  </div>
+                  <h4 className="text-xl font-serif font-bold text-white mb-3">{service.title}</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{service.desc}</p>
+                  <Link href={`/contact?subject=${encodeURIComponent(service.title)}`} className="mt-6 inline-block text-xs text-primary uppercase tracking-widest border-b border-primary/40 pb-0.5 hover:text-white hover:border-white transition-colors">
+                    Demander ce rituel →
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
           <div className="text-center mt-12">
             <Link href="/services" className="inline-block border-b border-primary text-primary hover:text-white hover:border-white transition-colors pb-1 tracking-widest uppercase text-xs">
-              Voir tous les services
+              Voir tous les 12 services →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Gallery — auto-scroll */}
+      {/* === GALLERY AUTO-SCROLL === */}
       <section className="py-24 w-full bg-background overflow-hidden">
         <div className="container mx-auto px-4 mb-12 text-center">
-          <h2 className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">Aperçu du Sanctuaire</h2>
-          <h3 className="text-4xl font-serif font-bold text-white">Le Pouvoir en Action</h3>
-          <p className="text-muted-foreground mt-4 max-w-xl mx-auto text-sm">Chaque image est le témoignage silencieux d'une destinée transformée.</p>
+          <p className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">Aperçu du Sanctuaire</p>
+          <h3 className="text-4xl font-serif font-bold text-white mb-4">Le Pouvoir en Action</h3>
+          <p className="text-muted-foreground text-sm max-w-xl mx-auto">Chaque image porte la trace d'une destinée transformée à jamais.</p>
         </div>
-        <AutoScrollCarousel images={galleryImages} />
-        <div className="text-center mt-8">
+        <AutoScrollGallery images={galleryImages} />
+        <div className="text-center mt-10">
           <Link href="/rituels" className="inline-block border-b border-primary text-primary hover:text-white hover:border-white transition-colors pb-1 tracking-widest uppercase text-xs">
-            Voir tous les rituels
+            Voir tous les rituels annotés →
           </Link>
         </div>
       </section>
 
-      {/* Testimonials — auto-scroll */}
-      <section className="py-24 w-full bg-card border-y border-white/5 overflow-hidden">
-        <div className="container mx-auto px-4 mb-12 text-center">
-          <h2 className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">Témoignages</h2>
-          <h3 className="text-4xl font-serif font-bold text-white">Leurs Vies Ont Changé</h3>
+      {/* === VIDEO SECTION (si URL configurée) === */}
+      {settings?.videoUrl && (
+        <VideoSection videoUrl={settings.videoUrl} videoTitle={settings.videoTitle || "Le Maître en Action"} />
+      )}
+
+      {/* === URGENCE CTA STRIP === */}
+      <section className="w-full bg-primary/10 border-y border-primary/20 py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="text-white font-serif text-xl font-bold mb-1">Votre situation vous pèse ? Ne supportez plus.</p>
+              <p className="text-muted-foreground text-sm">Des milliers ont attendu — et regretté de ne pas avoir agi plus tôt. Prenez contact maintenant.</p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+              <a href={`tel:${phone}`} className="px-6 py-3 border border-primary/50 text-primary font-bold tracking-widest uppercase text-xs hover:bg-primary/10 transition-colors flex items-center gap-2">
+                <Phone size={13} />Appeler
+              </a>
+              <Link href="/contact" className="px-6 py-3 bg-primary text-background font-bold tracking-widest uppercase text-xs hover:bg-primary/90 transition-colors">
+                Demander un Rituel
+              </Link>
+            </div>
+          </div>
         </div>
-        <TestimonialsCarousel />
+      </section>
+
+      {/* === TESTIMONIALS AUTO-SCROLL === */}
+      <section className="py-24 w-full bg-card overflow-hidden">
+        <div className="container mx-auto px-4 mb-12 text-center">
+          <p className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">Ce que disent ceux dont la vie a changé</p>
+          <h3 className="text-4xl font-serif font-bold text-white mb-4">Leurs Rituels. Leurs Résultats.</h3>
+          <p className="text-muted-foreground text-sm max-w-xl mx-auto">Chaque témoignage décrit un rituel accompli — pas une simple consultation. La puissance du Maître s'est manifestée.</p>
+        </div>
+        <AutoScrollTestimonials />
         <div className="text-center mt-10">
           <Link href="/avis" className="inline-block border-b border-primary text-primary hover:text-white hover:border-white transition-colors pb-1 tracking-widest uppercase text-xs">
-            Lire tous les témoignages (30+)
+            Lire les 30 témoignages complets →
           </Link>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* === FINAL CTA === */}
       <section className="py-32 w-full bg-background text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5" />
-        <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-8">N'attendez plus que le destin décide.</h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Contactez {siteName} dès aujourd'hui pour une analyse confidentielle de votre situation.
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, rgba(212,175,55,0.08) 0%, transparent 70%)" }} />
+        <div className="container mx-auto px-4 relative z-10 max-w-3xl">
+          <div className="text-primary text-4xl mb-8">✦</div>
+          <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+            Votre vie peut changer<br />
+            <span className="text-primary">dès aujourd'hui.</span>
+          </h2>
+          <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto leading-relaxed">
+            Chaque jour sans agir est un jour de plus à subir ce qui peut être changé. {siteName} est prêt à commencer votre rituel. La question est : êtes-vous prêt à reprendre le contrôle de votre destin ?
           </p>
-          <Link href="/contact" className="px-10 py-5 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors text-lg" data-testid="cta-contact">
-            Prendre Contact
-          </Link>
+          <p className="text-muted-foreground/60 text-sm mb-12">Consultation confidentielle · Résultats garantis · Travail possible à distance</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/contact" className="px-10 py-5 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors text-sm shadow-lg shadow-primary/25" data-testid="final-cta">
+              Prendre Contact Maintenant
+            </Link>
+            <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer"
+              className="px-10 py-5 border border-white/20 text-white font-bold tracking-widest uppercase hover:border-primary hover:text-primary transition-all text-sm flex items-center justify-center gap-2">
+              <MessageCircle size={16} />
+              WhatsApp Direct
+            </a>
+          </div>
         </div>
       </section>
     </div>

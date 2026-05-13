@@ -17,4 +17,6 @@ export interface SiteSettingsUpdate {
   aboutImage?: string;
   ceremonyImages?: string[];
   ritualImages?: string[];
+  videoUrl?: string;
+  videoTitle?: string;
 }
