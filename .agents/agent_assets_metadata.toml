@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "t8fjJ74Y35ejwRqmJ9KIe"
+uri = "file://artifacts/voyance-site/public/hero.png"
+type = "image"
+title = "hero background ceremony"
+
+[[generated]]
+id = "H9wiPZKeXiOvFOh3unl7V"
+uri = "file://artifacts/voyance-site/public/about.png"
+type = "image"
+title = "spiritual master portrait"
+
+[[generated]]
+id = "UMYoXzHk9sdj1UaCZ88bC"
+uri = "file://artifacts/voyance-site/public/gallery-1.png"
+type = "image"
+title = "mystical altar"
+
+[[generated]]
+id = "QsavxDDRRXzWjE0d-JFw6"
+uri = "file://artifacts/voyance-site/public/gallery-2.png"
+type = "image"
+title = "ancient symbols"
+
+[[generated]]
+id = "0056iJd9Ma8KGTW2wzeDp"
+uri = "file://artifacts/voyance-site/public/gallery-3.png"
+type = "image"
+title = "crystal ball hands"
+
+[[generated]]
+id = "erOTnmn_xfD56zq0p7qe9"
+uri = "file://artifacts/voyance-site/public/gallery-4.png"
+type = "image"
+title = "mystical book"
+
+[[generated]]
+id = "vucQByD_1cVJU1rduqY8D"
+uri = "file://artifacts/voyance-site/public/gallery-5.png"
+type = "image"
+title = "wealth ritual"
+
+[[generated]]
+id = "hyMmiierTStXcEO1s2nAw"
+uri = "file://artifacts/voyance-site/public/gallery-6.png"
+type = "image"
+title = "incense smoke"
