@@ -1,0 +1,50 @@
+2026-05-14T09:22:56.79892015Z   dist/thread-stream-worker.mjs.map   12.0kb
+2026-05-14T09:22:56.79892207Z 
+2026-05-14T09:22:56.79892459Z ⚡ Done in 445ms
+2026-05-14T09:22:57.180352358Z 
+2026-05-14T09:22:57.180376908Z > @workspace/db@0.0.0 push /opt/render/project/src/lib/db
+2026-05-14T09:22:57.180382188Z > drizzle-kit push --config ./drizzle.config.ts
+2026-05-14T09:22:57.180384918Z 
+2026-05-14T09:22:57.32665559Z Reading config file '/opt/render/project/src/lib/db/drizzle.config.ts'
+2026-05-14T09:22:57.745638088Z Using 'pg' driver for database querying
+2026-05-14T09:22:58.035808131Z [⣷] Pulling schema from database...
+2026-05-14T09:22:58.036280119Z (node:400) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+2026-05-14T09:22:58.03628851Z In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+2026-05-14T09:22:58.036291879Z 
+2026-05-14T09:22:58.03629583Z To prepare for this change:
+2026-05-14T09:22:58.0362994Z - If you want the current behavior, explicitly use 'sslmode=verify-full'
+2026-05-14T09:22:58.03630238Z - If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+2026-05-14T09:22:58.03630546Z 
+2026-05-14T09:22:58.03630925Z See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+2026-05-14T09:22:58.03631239Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-05-14T09:22:58.15666619Z [⣯] Pulling schema from database...
+2026-05-14T09:22:58.285073898Z [⣟] Pulling schema from database...
+2026-05-14T09:22:58.313680815Z [✓] Pulling schema from database...
+2026-05-14T09:22:58.320622313Z [i] No changes detected
+2026-05-14T09:23:03.010225905Z ==> Uploading build...
+2026-05-14T09:23:11.927249088Z ==> Uploaded in 4.3s. Compression took 4.6s
+2026-05-14T09:23:11.952638621Z ==> Build successful 🎉
+2026-05-14T09:23:15.649114668Z ==> Deploying...
+2026-05-14T09:23:15.8374352Z ==> Setting WEB_CONCURRENCY=1 by default, based on available CPUs in the instance
+2026-05-14T09:23:38.147813389Z ==> Running 'node artifacts/api-server/dist/index.mjs'
+2026-05-14T09:23:39.154323817Z file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:19930
+2026-05-14T09:23:39.154355178Z           throw new PathError(`Missing parameter name at index ${index}`, str);
+2026-05-14T09:23:39.154359958Z                 ^
+2026-05-14T09:23:39.154362638Z 
+2026-05-14T09:23:39.154366179Z PathError [TypeError]: Missing parameter name at index 1: *; visit https://git.new/pathToRegexpError for info
+2026-05-14T09:23:39.154371879Z     at name (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:19930:17)
+2026-05-14T09:23:39.154374949Z     at parse3 (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:19944:66)
+2026-05-14T09:23:39.154378039Z     at pathToRegexp (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20086:58)
+2026-05-14T09:23:39.154381239Z     at Object.match (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20056:32)
+2026-05-14T09:23:39.154384059Z     at matcher (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20258:27)
+2026-05-14T09:23:39.1543876Z     at new Layer (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20265:68)
+2026-05-14T09:23:39.1543904Z     at router6.route (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20690:21)
+2026-05-14T09:23:39.15439361Z     at app2.route (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20999:26)
+2026-05-14T09:23:39.15439657Z     at app2.<computed> [as get] (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:21062:26)
+2026-05-14T09:23:39.15439937Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:56126:7 {
+2026-05-14T09:23:39.15440233Z   originalPath: '*'
+2026-05-14T09:23:39.1544055Z }
+2026-05-14T09:23:39.15440813Z 
+2026-05-14T09:23:39.154411111Z Node.js v24.14.1
+2026-05-14T09:23:45.114777637Z ==> Exited with status 1
+2026-05-14T09:23:45.116749534Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
