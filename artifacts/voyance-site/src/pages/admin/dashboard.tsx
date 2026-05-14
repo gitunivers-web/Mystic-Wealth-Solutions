@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { ExternalLink } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
 
 type FormValues = {
@@ -112,10 +113,17 @@ export default function AdminDashboard() {
               </p>
             </div>
           </div>
-          <Button variant="outline" onClick={handleLogout} data-testid="btn-logout"
-            className="border-primary/30 text-primary hover:bg-primary/10 rounded-none text-xs uppercase tracking-widest">
-            Déconnexion
-          </Button>
+          <div className="flex items-center gap-3">
+            <a href="/" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 border border-white/10 text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors text-xs uppercase tracking-widest">
+              <ExternalLink size={12} />
+              Voir le site
+            </a>
+            <Button variant="outline" onClick={handleLogout} data-testid="btn-logout"
+              className="border-primary/30 text-primary hover:bg-primary/10 rounded-none text-xs uppercase tracking-widest">
+              Déconnexion
+            </Button>
+          </div>
         </div>
       </header>
 
