@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppWidget } from "@/components/layout/whatsapp-widget";
+import { WelcomeBanner } from "@/components/layout/welcome-banner";
 
 import Home from "@/pages/home";
 import Services from "@/pages/services";
@@ -21,6 +22,7 @@ const queryClient = new QueryClient();
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
+      <WelcomeBanner />
       <Navbar />
       <main className="flex-1">
         {children}
