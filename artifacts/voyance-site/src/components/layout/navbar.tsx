@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useGetSettings } from "@workspace/api-client-react";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X, Moon, Sparkles } from "lucide-react";
 import { Logo } from "./logo";
 import { useTheme } from "@/contexts/theme-context";
 
@@ -65,7 +65,7 @@ export function Navbar() {
             aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
             className="p-2 text-primary hover:text-primary/80 transition-colors"
           >
-            {theme === "dark" ? <Moon size={20} strokeWidth={1.5} /> : <Sun size={20} strokeWidth={1.5} />}
+            {theme === "dark" ? <Moon size={20} strokeWidth={1.5} /> : <Sparkles size={20} strokeWidth={1.5} />}
           </button>
         </div>
 
@@ -73,10 +73,10 @@ export function Navbar() {
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={toggle}
-            aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
+            aria-label={theme === "dark" ? "Thème Prune Royale" : "Thème Anthracite"}
             className="p-2 text-primary hover:text-primary/80 transition-colors"
           >
-            {theme === "dark" ? <Moon size={20} strokeWidth={1.5} /> : <Sun size={20} strokeWidth={1.5} />}
+            {theme === "dark" ? <Moon size={20} strokeWidth={1.5} /> : <Sparkles size={20} strokeWidth={1.5} />}
           </button>
           <button
             className="text-primary p-2"
