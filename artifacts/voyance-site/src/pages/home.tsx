@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { useGetSettings } from "@workspace/api-client-react";
-import { Phone, MessageCircle, Star, Shield, Zap, Heart } from "lucide-react";
+import { Phone, MessageCircle, Star, Shield, Zap, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { DeepEyes } from "@/components/layout/deep-eyes";
 
 const services = [
   { icon: Zap, title: "Rituel de Richesse", desc: "Sa spécialité absolue. Par les forces mystiques ancestrales, il brise les blocages financiers et fait affluer l'abondance en 15 à 30 jours.", urgent: true },
@@ -158,50 +159,89 @@ function AutoScrollGallery({ images }: { images: string[] }) {
   );
 }
 
-function VideoSection({ videoUrl, videoTitle }: { videoUrl: string; videoTitle: string }) {
-  const isLocalVideo = (url: string) =>
-    url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg") || url.startsWith("/");
-
-  const getEmbedUrl = (url: string) => {
-    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
-    if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&modestbranding=1`;
-    const vmMatch = url.match(/vimeo\.com\/(\d+)/);
-    if (vmMatch) return `https://player.vimeo.com/video/${vmMatch[1]}`;
-    return url;
+function VideoPlayer({ url, title }: { url: string; title: string }) {
+  const isLocal = url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg") || url.startsWith("/");
+  const getEmbed = (u: string) => {
+    const yt = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+    if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=0&rel=0&modestbranding=1`;
+    const vm = u.match(/vimeo\.com\/(\d+)/);
+    if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+    return u;
   };
+  return isLocal ? (
+    <video src={url} controls className="w-full h-full object-cover" title={title} />
+  ) : (
+    <iframe src={getEmbed(url)} title={title}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen className="w-full h-full" />
+  );
+}
+
+function VideoSlider({ slides }: { slides: { url: string; title: string; label: string }[] }) {
+  const [idx, setIdx] = useState(0);
+  const prev = () => setIdx(i => (i - 1 + slides.length) % slides.length);
+  const next = () => setIdx(i => (i + 1) % slides.length);
+
+  if (slides.length === 0) return null;
+  const current = slides[idx];
 
   return (
     <section className="py-24 bg-card border-y border-white/5 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <p className="text-primary tracking-[0.3em] uppercase text-xs font-semibold mb-4">Voyez par vous-même</p>
-          <h3 className="text-4xl font-serif font-bold text-white mb-4">{videoTitle || "Le Maître en Action"}</h3>
+          <h3 className="text-4xl font-serif font-bold text-white mb-4">{current.title}</h3>
           <p className="text-muted-foreground max-w-xl mx-auto text-sm">Les mots ne suffisent pas. Observez la puissance des rituels ancestraux à l'œuvre.</p>
         </div>
+
         <div className="max-w-4xl mx-auto">
+          {/* Video frame */}
           <div className="relative aspect-video border border-white/10 overflow-hidden shadow-2xl">
             <div className="absolute inset-0 border border-primary/20 pointer-events-none z-10" />
-            {isLocalVideo(videoUrl) ? (
-              <video
-                src={videoUrl}
-                controls
-                className="w-full h-full object-cover"
-                title={videoTitle || "Rituel Maître Zonon 666"}
-              />
-            ) : (
-              <iframe
-                src={getEmbedUrl(videoUrl)}
-                title={videoTitle || "Rituel Maître Zonon 666"}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            )}
+            <AnimatePresence mode="wait">
+              <motion.div key={idx} className="absolute inset-0"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}>
+                <VideoPlayer url={current.url} title={current.title} />
+              </motion.div>
+            </AnimatePresence>
           </div>
+
+          {/* Controls */}
+          {slides.length > 1 && (
+            <div className="flex items-center justify-between mt-5 px-1">
+              {/* Prev */}
+              <button onClick={prev}
+                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest">
+                <ChevronLeft size={16} /> Précédente
+              </button>
+
+              {/* Dots + labels */}
+              <div className="flex items-center gap-3">
+                {slides.map((s, i) => (
+                  <button key={i} onClick={() => setIdx(i)}
+                    className={`flex flex-col items-center gap-1 transition-colors ${i === idx ? "text-primary" : "text-zinc-600 hover:text-zinc-400"}`}>
+                    <span className={`block w-6 h-0.5 transition-all ${i === idx ? "bg-primary" : "bg-zinc-700"}`} />
+                    <span className="text-xs hidden sm:block">{s.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Next */}
+              <button onClick={next}
+                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest">
+                Suivante <ChevronRight size={16} />
+              </button>
+            </div>
+          )}
         </div>
-        <div className="text-center mt-10">
-          <Link href="/contact" className="inline-block px-8 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors">
+
+        <div className="text-center mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/contact" className="inline-block px-8 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors text-sm">
             Je veux ce résultat
+          </Link>
+          <Link href="/rituels" className="inline-block px-8 py-4 border border-primary/40 text-primary font-bold tracking-widest uppercase hover:bg-primary/10 transition-colors text-sm">
+            Voir tous les rituels →
           </Link>
         </div>
       </div>
@@ -231,8 +271,19 @@ export default function Home() {
 
         <div className="relative z-10 container mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }} className="max-w-5xl mx-auto">
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-              className="text-primary tracking-[0.4em] uppercase text-xs font-semibold mb-8">
+
+            {/* ── Yeux mystiques ── */}
+            <motion.div initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 1.2 }}
+              className="flex flex-col items-center mb-8">
+              <DeepEyes size="lg" />
+              <p className="text-xs tracking-[0.38em] text-amber-700/55 uppercase mt-3 font-serif">
+                Les forces de l'invisible vous observent
+              </p>
+            </motion.div>
+
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+              className="text-primary tracking-[0.4em] uppercase text-xs font-semibold mb-6">
               Maître des Forces Invisibles depuis 30 ans
             </motion.p>
             <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold text-white mb-8 leading-[1.05]">
@@ -411,10 +462,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ VIDEO SECTION (si URL configurée) ═══ */}
-      {settings?.videoUrl && (
-        <VideoSection videoUrl={settings.videoUrl} videoTitle={settings.videoTitle || "Le Maître en Action"} />
-      )}
+      {/* ═══ VIDEO SLIDER ═══ */}
+      {(() => {
+        const slides: { url: string; title: string; label: string }[] = [];
+        if (settings?.videoUrl) {
+          slides.push({ url: settings.videoUrl, title: settings.videoTitle || "Le Maître en Action", label: "Accueil" });
+        }
+        const ritualVideo = settings?.rituals?.find(r => r.videoUrl);
+        if (ritualVideo?.videoUrl) {
+          slides.push({ url: ritualVideo.videoUrl, title: "Rituel en Cours", label: "Rituel" });
+        }
+        return slides.length > 0 ? <VideoSlider slides={slides} /> : null;
+      })()}
 
       {/* ═══ URGENCE STRIP ═══ */}
       <section className="w-full bg-primary/10 border-y border-primary/20 py-8">
