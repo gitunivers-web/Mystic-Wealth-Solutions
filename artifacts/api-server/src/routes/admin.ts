@@ -4,7 +4,10 @@ import crypto from "crypto";
 
 const router = Router();
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Valala123@@";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) {
+  throw new Error("ADMIN_PASSWORD environment variable is required");
+}
 
 router.post("/admin/login", (req, res) => {
   try {
