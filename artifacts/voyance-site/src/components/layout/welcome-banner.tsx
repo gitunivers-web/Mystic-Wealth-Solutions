@@ -10,9 +10,10 @@ function MysticEyes() {
   const [blink, setBlink] = useState(false);
   const [halfBlink, setHalfBlink] = useState(false);
 
-  // Pupil tracking
   useEffect(() => {
-    const movePupil = (e: MouseEvent) => {
+    const movePupil = (e: MouseEvent | TouchEvent) => {
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
       [
         { eye: leftEyeRef.current, pupil: leftPupilRef.current },
         { eye: rightEyeRef.current, pupil: rightPupilRef.current },
@@ -21,42 +22,39 @@ function MysticEyes() {
         const rect = eye.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        const dx = e.clientX - cx;
-        const dy = e.clientY - cy;
+        const dx = clientX - cx;
+        const dy = clientY - cy;
         const angle = Math.atan2(dy, dx);
-        const dist = Math.min(Math.hypot(dx, dy), 18);
+        const dist = Math.min(Math.hypot(dx, dy), 14);
         pupil.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
       });
     };
     window.addEventListener("mousemove", movePupil);
-    return () => window.removeEventListener("mousemove", movePupil);
+    window.addEventListener("touchmove", movePupil as EventListener, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", movePupil);
+      window.removeEventListener("touchmove", movePupil as EventListener);
+    };
   }, []);
 
-  // Blink scheduler — random interval, sometimes double-blink
   const scheduleBlink = useCallback(() => {
-    const delay = 2000 + Math.random() * 3500;
+    const delay = 2200 + Math.random() * 3200;
     const t = setTimeout(async () => {
-      // First blink
       setBlink(true);
-      await new Promise(r => setTimeout(r, 130));
+      await new Promise(r => setTimeout(r, 120));
       setBlink(false);
-
-      // Occasionally do a half-drowsy look
       if (Math.random() < 0.3) {
-        await new Promise(r => setTimeout(r, 180));
+        await new Promise(r => setTimeout(r, 160));
         setHalfBlink(true);
-        await new Promise(r => setTimeout(r, 250));
+        await new Promise(r => setTimeout(r, 220));
         setHalfBlink(false);
       }
-
-      // Occasionally double-blink
-      if (Math.random() < 0.25) {
-        await new Promise(r => setTimeout(r, 120));
-        setBlink(true);
+      if (Math.random() < 0.2) {
         await new Promise(r => setTimeout(r, 110));
+        setBlink(true);
+        await new Promise(r => setTimeout(r, 100));
         setBlink(false);
       }
-
       scheduleBlink();
     }, delay);
     return t;
@@ -67,155 +65,88 @@ function MysticEyes() {
     return () => clearTimeout(t);
   }, [scheduleBlink]);
 
-  const lidTop = blink ? "50%" : halfBlink ? "25%" : "0%";
-  const lidBottom = blink ? "50%" : halfBlink ? "25%" : "0%";
+  const lidSize = blink ? "50%" : halfBlink ? "22%" : "0%";
+
+  /* Eye dimensions */
+  const EYE_W = 72;
+  const EYE_H = 42;
 
   return (
-    <div className="flex flex-col items-center mb-6 select-none">
-      {/* Eyes row */}
-      <div className="flex items-center gap-10">
+    <div className="flex flex-col items-center mb-4 select-none">
+      <div className="flex items-center gap-8">
         {(["left", "right"] as const).map((side) => (
-          <div key={side} className="relative" style={{ width: 90, height: 52 }}>
-            {/* Outer aura */}
+          <div key={side} className="relative" style={{ width: EYE_W, height: EYE_H }}>
+            {/* Aura */}
             <div className="absolute inset-0 rounded-[50%] pointer-events-none"
-              style={{ boxShadow: "0 0 28px 8px #c8880040, 0 0 60px 20px #a0600020" }} />
+              style={{ boxShadow: "0 0 22px 6px #c8880038, 0 0 48px 14px #a0600018" }} />
 
             {/* Eyeball */}
             <div
               ref={side === "left" ? leftEyeRef : rightEyeRef}
               className="absolute inset-0 rounded-[50%] overflow-hidden"
               style={{
-                background: "radial-gradient(ellipse at 50% 60%, #eedcaa 0%, #b8922a 45%, #6b3c00 80%, #1a0800 100%)",
-                boxShadow: "inset 0 2px 12px #00000070, inset 0 -2px 8px #00000050",
+                background: "radial-gradient(ellipse at 50% 60%, #ebd9a0 0%, #b08828 45%, #6a3a00 80%, #180800 100%)",
+                boxShadow: "inset 0 2px 10px #00000068, inset 0 -2px 6px #00000048",
               }}
             >
-              {/* Iris ring */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative flex items-center justify-center"
-                  style={{ width: 36, height: 36 }}>
+                <div className="relative flex items-center justify-center" style={{ width: 28, height: 28 }}>
                   {/* Iris */}
                   <div className="absolute inset-0 rounded-full"
-                    style={{
-                      background: "conic-gradient(from 0deg, #5c2e00, #8b4a00, #3d1a00, #7a3d00, #5c2e00)",
-                      boxShadow: "0 0 8px #c88800aa",
-                    }} />
-                  {/* Iris inner */}
-                  <div className="absolute rounded-full"
-                    style={{
-                      inset: 4,
-                      background: "radial-gradient(circle at 40% 35%, #4a2000, #1a0800)",
-                    }} />
+                    style={{ background: "conic-gradient(from 0deg, #4e2800, #804200, #361600, #6e3600, #4e2800)", boxShadow: "0 0 6px #c0800090" }} />
+                  <div className="absolute rounded-full" style={{ inset: 3, background: "radial-gradient(circle at 40% 35%, #401c00, #160800)" }} />
                   {/* Pupil */}
                   <div
                     ref={side === "left" ? leftPupilRef : rightPupilRef}
                     className="absolute rounded-full"
-                    style={{
-                      width: 14, height: 14,
-                      background: "radial-gradient(circle at 35% 30%, #222 0%, #000 70%)",
-                      transitionProperty: "transform",
-                      transitionDuration: "55ms",
-                      transitionTimingFunction: "linear",
-                    }}
+                    style={{ width: 11, height: 11, background: "radial-gradient(circle at 35% 30%, #1a1a1a 0%, #000 70%)", transitionProperty: "transform", transitionDuration: "55ms", transitionTimingFunction: "linear" }}
                   />
                   {/* Gleam */}
                   <div className="absolute rounded-full pointer-events-none"
-                    style={{ width: 7, height: 5, top: 6, left: 8, background: "rgba(255,255,220,0.65)", filter: "blur(1px)" }} />
-                  <div className="absolute rounded-full pointer-events-none"
-                    style={{ width: 3, height: 3, bottom: 8, right: 6, background: "rgba(255,255,200,0.25)" }} />
+                    style={{ width: 6, height: 4, top: 5, left: 6, background: "rgba(255,255,220,0.6)", filter: "blur(1px)" }} />
                 </div>
               </div>
             </div>
 
-            {/* ── EYELIDS (SVG clip approach via absolute divs) ── */}
             {/* Top eyelid */}
-            <div
-              className="absolute inset-x-0 top-0 rounded-t-[50%] pointer-events-none"
-              style={{
-                height: lidTop,
-                background: "linear-gradient(to bottom, #0d0608 70%, #1a0d10)",
-                transition: "height 90ms cubic-bezier(0.4,0,0.2,1)",
-                zIndex: 10,
-              }}
-            />
+            <div className="absolute inset-x-0 top-0 rounded-t-[50%] pointer-events-none"
+              style={{ height: lidSize, background: "linear-gradient(to bottom, #0c0407 70%, #180b0e)", transition: "height 85ms cubic-bezier(0.4,0,0.2,1)", zIndex: 10 }} />
             {/* Bottom eyelid */}
-            <div
-              className="absolute inset-x-0 bottom-0 rounded-b-[50%] pointer-events-none"
-              style={{
-                height: lidBottom,
-                background: "linear-gradient(to top, #0d0608 70%, #1a0d10)",
-                transition: "height 90ms cubic-bezier(0.4,0,0.2,1)",
-                zIndex: 10,
-              }}
-            />
+            <div className="absolute inset-x-0 bottom-0 rounded-b-[50%] pointer-events-none"
+              style={{ height: lidSize, background: "linear-gradient(to top, #0c0407 70%, #180b0e)", transition: "height 85ms cubic-bezier(0.4,0,0.2,1)", zIndex: 10 }} />
 
-            {/* Eyelash fringe — top */}
+            {/* Top lashes */}
             <div className="absolute top-0 inset-x-0 flex justify-around pointer-events-none" style={{ zIndex: 11 }}>
-              {[...Array(7)].map((_, i) => (
-                <div key={i}
-                  style={{
-                    width: 1.5,
-                    height: 7 + (i % 3) * 2,
-                    background: "#6b3300",
-                    borderRadius: 2,
-                    transform: `rotate(${(i - 3) * 8}deg)`,
-                    transformOrigin: "bottom",
-                    opacity: 0.8,
-                  }}
-                />
+              {[...Array(6)].map((_, i) => (
+                <div key={i} style={{ width: 1.5, height: 6 + (i % 3) * 2, background: "#5a2e00", borderRadius: 2, transform: `rotate(${(i - 2.5) * 9}deg)`, transformOrigin: "bottom", opacity: 0.8 }} />
               ))}
             </div>
-            {/* Eyelash fringe — bottom */}
+            {/* Bottom lashes */}
             <div className="absolute bottom-0 inset-x-0 flex justify-around pointer-events-none" style={{ zIndex: 11 }}>
-              {[...Array(5)].map((_, i) => (
-                <div key={i}
-                  style={{
-                    width: 1,
-                    height: 4 + (i % 2) * 2,
-                    background: "#6b3300",
-                    borderRadius: 2,
-                    transform: `rotate(${(i - 2) * 7}deg)`,
-                    transformOrigin: "top",
-                    opacity: 0.5,
-                  }}
-                />
+              {[...Array(4)].map((_, i) => (
+                <div key={i} style={{ width: 1, height: 4 + (i % 2), background: "#5a2e00", borderRadius: 2, transform: `rotate(${(i - 1.5) * 8}deg)`, transformOrigin: "top", opacity: 0.45 }} />
               ))}
             </div>
 
             {/* Eyebrow */}
             <div className="absolute pointer-events-none"
-              style={{
-                top: -12,
-                left: side === "left" ? 8 : 6,
-                width: 70,
-                height: 5,
-                background: "linear-gradient(90deg, transparent, #7a4000 20%, #5c2e00 80%, transparent)",
-                borderRadius: 4,
-                transform: side === "left" ? "rotate(-6deg)" : "rotate(6deg)",
-                opacity: 0.9,
-              }}
-            />
+              style={{ top: -10, left: side === "left" ? 6 : 4, width: 58, height: 4, background: "linear-gradient(90deg, transparent, #6a3800 20%, #4e2400 80%, transparent)", borderRadius: 3, transform: side === "left" ? "rotate(-7deg)" : "rotate(7deg)", opacity: 0.85 }} />
           </div>
         ))}
       </div>
 
-      {/* Label */}
-      <p className="text-xs tracking-[0.4em] text-amber-700/70 uppercase mt-5 font-serif">
+      <p className="text-xs tracking-[0.35em] text-amber-700/65 uppercase mt-4 font-serif">
         L'Œil du Maître vous voit
       </p>
     </div>
   );
 }
 
-interface WelcomeBannerProps {
-  phone?: string;
-}
-
-export function WelcomeBanner({ phone = "+22968075372" }: WelcomeBannerProps) {
+export function WelcomeBanner({ phone = "+22968075372" }: { phone?: string }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const seen = sessionStorage.getItem("zonon-banner-seen");
-    if (!seen) setVisible(true);
+    if (!sessionStorage.getItem("zonon-banner-seen")) setVisible(true);
   }, []);
 
   const dismiss = () => {
@@ -227,59 +158,63 @@ export function WelcomeBanner({ phone = "+22968075372" }: WelcomeBannerProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-      style={{ background: "rgba(5,2,12,0.93)", backdropFilter: "blur(6px)" }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-5"
+      style={{ background: "rgba(5,2,12,0.93)", backdropFilter: "blur(5px)" }}
     >
       {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-52 opacity-15 pointer-events-none"
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-40 opacity-15 pointer-events-none"
         style={{ background: "radial-gradient(ellipse, #c88800 0%, transparent 70%)" }} />
 
+      {/* Modal — max-height + scroll for small screens */}
       <div
-        className="relative max-w-lg w-full overflow-hidden"
+        className="relative w-full overflow-y-auto"
         style={{
+          maxWidth: 480,
+          maxHeight: "calc(100dvh - 24px)",
           background: "linear-gradient(160deg, #0c0508 0%, #110b02 100%)",
-          border: "1px solid #6b380030",
+          border: "1px solid rgba(107,56,0,0.28)",
           borderRadius: 2,
+          scrollbarWidth: "none",
         }}
       >
-        {/* Top gold line */}
-        <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, #c88800, transparent)" }} />
+        {/* Top line */}
+        <div className="h-px sticky top-0" style={{ background: "linear-gradient(90deg, transparent, #c88800, transparent)" }} />
 
-        <div className="px-7 py-7">
+        <div className="px-5 sm:px-7 py-5 sm:py-6">
           <MysticEyes />
 
           {/* Title */}
-          <div className="text-center mb-6">
-            <p className="text-xs tracking-[0.35em] text-amber-700/60 uppercase mb-2 font-serif">Avis Officiel</p>
-            <h2 className="font-serif text-white text-xl font-bold leading-snug">
+          <div className="text-center mb-5">
+            <p className="text-xs tracking-[0.3em] text-amber-700/60 uppercase mb-1.5 font-serif">Avis Officiel</p>
+            <h2 className="font-serif text-white text-lg sm:text-xl font-bold leading-snug">
               Mise en Garde & Engagement<br />du Maître Zonon 666
             </h2>
           </div>
 
           {/* Content blocks */}
-          <div className="space-y-4 text-sm text-stone-300 leading-relaxed">
-            <div className="flex gap-3">
-              <Award size={17} className="shrink-0 mt-0.5 text-amber-500" />
+          <div className="space-y-3.5 text-sm text-stone-300 leading-relaxed">
+            <div className="flex gap-2.5">
+              <Award size={16} className="shrink-0 mt-0.5 text-amber-500" />
               <p>
-                Maître Zonon 666 est un voyant certifié, <strong className="text-amber-400/90">titulaire de diplômes et certificats de qualification</strong> reconnus, habilité à exercer son art partout dans le monde.
+                Maître Zonon 666 est un voyant certifié, <strong className="text-amber-400/90">titulaire de diplômes et certificats de qualification</strong> reconnus, habilité à exercer partout dans le monde.
               </p>
             </div>
-            <div className="flex gap-3">
-              <AlertTriangle size={17} className="shrink-0 mt-0.5 text-red-400" />
+            <div className="flex gap-2.5">
+              <AlertTriangle size={16} className="shrink-0 mt-0.5 text-red-400" />
               <p>
-                <strong className="text-red-400/90">Mise en garde contre les imposteurs :</strong> des individus mal intentionnés utilisent les photos et vidéos du Maître sur les réseaux sociaux pour escroquer. Le Maître n'est joignable <em>que</em> via les contacts officiels — le <strong className="text-white">{phone}</strong>, le WhatsApp et le formulaire de contact de ce site.
+                <strong className="text-red-400/90">Mise en garde :</strong> des imposteurs utilisent ses photos et vidéos sur les réseaux sociaux pour escroquer. Le Maître n'est joignable <em>que</em> via le <strong className="text-white">{phone}</strong>, le WhatsApp ou le formulaire de contact de ce site.
               </p>
             </div>
-            <div className="flex gap-3">
-              <Shield size={17} className="shrink-0 mt-0.5 text-amber-500" />
+            <div className="flex gap-2.5">
+              <Shield size={16} className="shrink-0 mt-0.5 text-amber-500" />
               <p>
-                Tout autre profil, numéro ou compte prétendant être le Maître Zonon 666 est une <strong className="text-amber-400/90">usurpation d'identité</strong>. Ne transmettez jamais d'argent à ces imposteurs.
+                Tout autre profil, numéro ou compte se réclamant du Maître Zonon 666 est une <strong className="text-amber-400/90">usurpation d'identité</strong>. Ne transmettez jamais d'argent à ces imposteurs.
               </p>
             </div>
-            <div className="flex gap-3">
-              <Star size={17} className="shrink-0 mt-0.5 text-amber-500" />
+            <div className="flex gap-2.5">
+              <Star size={16} className="shrink-0 mt-0.5 text-amber-500" />
               <p>
-                Quel que soit votre problème — amour, argent, protection, santé, travail — <strong className="text-amber-400/90">le Maître Zonon 666 vous trouvera la solution appropriée</strong>. Vous repartirez avec le sourire et la sérénité dans le cœur.
+                Quel que soit votre problème — amour, argent, protection, santé, travail — <strong className="text-amber-400/90">le Maître vous trouvera la solution appropriée</strong>. Vous repartirez avec le sourire et la sérénité.
               </p>
             </div>
           </div>
@@ -287,18 +222,15 @@ export function WelcomeBanner({ phone = "+22968075372" }: WelcomeBannerProps) {
           {/* CTA */}
           <button
             onClick={dismiss}
-            className="mt-7 w-full py-3.5 font-serif font-bold text-sm uppercase tracking-widest text-black transition-all hover:opacity-90 active:scale-[0.99]"
-            style={{
-              background: "linear-gradient(90deg, #8b6000, #c88800, #8b6000)",
-              borderRadius: 1,
-            }}
+            className="mt-6 w-full py-3 font-serif font-bold text-sm uppercase tracking-widest text-black transition-all hover:opacity-90 active:scale-[0.99]"
+            style={{ background: "linear-gradient(90deg, #8b6000, #c88800, #8b6000)", borderRadius: 1 }}
           >
             ✦ J'ai compris — Entrer dans le Sanctuaire
           </button>
         </div>
 
-        {/* Bottom gold line */}
-        <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, #c88800, transparent)" }} />
+        {/* Bottom line */}
+        <div className="h-px sticky bottom-0" style={{ background: "linear-gradient(90deg, transparent, #c88800, transparent)" }} />
       </div>
     </div>
   );
