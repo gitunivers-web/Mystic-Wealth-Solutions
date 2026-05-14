@@ -83,10 +83,10 @@ export default function Rituels() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
             {ritualImages.map((img, i) => {
               const annotations = [
-                "Rituel d'invocation des ancêtres — bougies sacrées et encens",
-                "Préparation du cercle de protection ancestral",
+                "Rituel de richesse — une fois accompli, il ouvre les portes de l'abondance financière",
+                "Protection contre les sorts maléfiques — sacrifice réalisé pour immuniser la personne contre toute attaque spirituelle",
                 "Offrandes aux esprits gardiens de la prospérité",
-                "Bain purificateur aux herbes mystiques d'Afrique de l'Ouest",
+                "Offrande sacrée — protège l'intégralité du foyer, attire la richesse et apaise les conflits conjugaux",
                 "Invocation des forces de l'abondance et de la richesse",
                 "Rituel de retour affectif — lien sacré entre deux âmes",
                 "Cérémonie de désenvoûtement et purification totale",
