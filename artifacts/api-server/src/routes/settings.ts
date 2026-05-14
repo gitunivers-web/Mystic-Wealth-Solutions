@@ -13,7 +13,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   siteName: "Maître Zonon 666",
   phone: "+22968075372",
   whatsapp: "+22968075372",
-  address: "Quartier Missérété, Lokossa — Bénin",
+  address: "Quartier Ahouandjigo, Lokossa — Bénin",
   email: "contact@maitrezonon666.com",
   web3formsKey: "",
   heroImage: "",

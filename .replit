@@ -1,4 +1,4 @@
-modules = ["nodejs-24"]
+modules = ["nodejs-24", "postgresql-16"]
 
 [deployment]
 router = "application"
@@ -36,3 +36,6 @@ externalPort = 3000
 [userenv.shared]
 ADMIN_TOKEN = "seraphin-admin-token-2025-secret-voyance"
 ADMIN_PASSWORD = "Valala123@@"
+
+[nix]
+channel = "stable-25_05"
