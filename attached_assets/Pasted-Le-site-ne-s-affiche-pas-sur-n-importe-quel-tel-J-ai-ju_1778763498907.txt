@@ -1,0 +1,56 @@
+Le site ne s'affiche pas sur n'importe quel tel. J'ai juste une page blanche alors que sur ordi, ça marche. Corriger cela. 
+Voici les logs render: 
+
+
+2026-05-14T12:35:16.94350151Z {"level":30,"time":1778762116943,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","req":{"id":111,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-05-14T12:35:16.948116951Z {"level":30,"time":1778762116947,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","status":200,"url":"https://maitre-zonon-db.onrender.com/api/healthz","msg":"Self-ping OK"}
+2026-05-14T12:45:11.001669878Z {"level":30,"time":1778762711001,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","req":{"id":112,"method":"GET","url":"/"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-05-14T12:45:11.278621007Z Error: CORS: origine non autorisée
+2026-05-14T12:45:11.278650648Z     at origin (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:59601:25)
+2026-05-14T12:45:11.278656748Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23811:17
+2026-05-14T12:45:11.278663438Z     at optionsCallback (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23793:13)
+2026-05-14T12:45:11.278667978Z     at corsMiddleware (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23797:11)
+2026-05-14T12:45:11.278671978Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T12:45:11.278676018Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T12:45:11.278680158Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T12:45:11.278684118Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T12:45:11.278688389Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T12:45:11.278692669Z     at internalNext (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:35930:11)
+2026-05-14T12:45:11.311728165Z Error: CORS: origine non autorisée
+2026-05-14T12:45:11.311751176Z     at origin (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:59601:25)
+2026-05-14T12:45:11.311756316Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23811:17
+2026-05-14T12:45:11.311812418Z     at optionsCallback (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23793:13)
+2026-05-14T12:45:11.311824178Z     at corsMiddleware (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23797:11)
+2026-05-14T12:45:11.311828978Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T12:45:11.311833758Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T12:45:11.311838479Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T12:45:11.311843068Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T12:45:11.311847599Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T12:45:11.311853219Z     at internalNext (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:35930:11)
+2026-05-14T12:46:06.157725661Z {"level":30,"time":1778762766157,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","req":{"id":113,"method":"GET","url":"/api/settings"},"res":{"statusCode":200},"responseTime":2629,"msg":"request completed"}
+2026-05-14T12:46:22.565088323Z {"level":30,"time":1778762782564,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","req":{"id":114,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-05-14T12:46:22.942491388Z Error: CORS: origine non autorisée
+2026-05-14T12:46:22.942510949Z     at origin (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:59601:25)
+2026-05-14T12:46:22.942515929Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23811:17
+2026-05-14T12:46:22.942520759Z     at optionsCallback (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23793:13)
+2026-05-14T12:46:22.942525389Z     at corsMiddleware (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23797:11)
+2026-05-14T12:46:22.942529929Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T12:46:22.942534379Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T12:46:22.942538669Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T12:46:22.94254313Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T12:46:22.942547379Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T12:46:22.94255197Z     at internalNext (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:35930:11)
+2026-05-14T12:46:22.94255658Z Error: CORS: origine non autorisée
+2026-05-14T12:46:22.94256115Z     at origin (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:59601:25)
+2026-05-14T12:46:22.94256543Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23811:17
+2026-05-14T12:46:22.94256967Z     at optionsCallback (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23793:13)
+2026-05-14T12:46:22.94257414Z     at corsMiddleware (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23797:11)
+2026-05-14T12:46:22.9425786Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T12:46:22.942583211Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T12:46:22.942587681Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T12:46:22.942593331Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T12:46:22.942598061Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T12:46:22.942603021Z     at internalNext (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:35930:11)
+2026-05-14T12:46:23.788621495Z {"level":30,"time":1778762783788,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","req":{"id":115,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-05-14T12:49:16.934988507Z {"level":30,"time":1778762956934,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","req":{"id":116,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-05-14T12:49:16.939114815Z {"level":30,"time":1778762956938,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-67cf856dc4-4vxkl","status":200,"url":"https://maitre-zonon-db.onrender.com/api/healthz","msg":"Self-ping OK"}

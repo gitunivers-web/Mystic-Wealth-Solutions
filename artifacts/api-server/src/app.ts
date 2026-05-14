@@ -23,9 +23,11 @@ const allowedOrigins = [
   "https://maitrezonon666.com",
   /\.replit\.app$/,
   /\.repl\.co$/,
+  /\.onrender\.com$/,   // domaine Render (dev + production)
 ];
 app.use(cors({
   origin: (origin, cb) => {
+    // Pas d'Origin = même origine ou curl → autorisé
     if (!origin) return cb(null, true);
     const allowed = allowedOrigins.some(o =>
       typeof o === "string" ? o === origin : o.test(origin)
