@@ -51,6 +51,13 @@ export const GetSettingsResponse = zod.object({
   aboutImage: zod.string(),
   ceremonyImages: zod.array(zod.string()),
   ritualImages: zod.array(zod.string()),
+  rituals: zod.array(
+    zod.object({
+      image: zod.string(),
+      description: zod.string(),
+      videoUrl: zod.string().optional(),
+    }),
+  ),
   videoUrl: zod.string().optional(),
   videoTitle: zod.string().optional(),
 });
@@ -69,6 +76,15 @@ export const UpdateSettingsBody = zod.object({
   aboutImage: zod.string().optional(),
   ceremonyImages: zod.array(zod.string()).optional(),
   ritualImages: zod.array(zod.string()).optional(),
+  rituals: zod
+    .array(
+      zod.object({
+        image: zod.string(),
+        description: zod.string(),
+        videoUrl: zod.string().optional(),
+      }),
+    )
+    .optional(),
   videoUrl: zod.string().optional(),
   videoTitle: zod.string().optional(),
 });
@@ -84,6 +100,13 @@ export const UpdateSettingsResponse = zod.object({
   aboutImage: zod.string(),
   ceremonyImages: zod.array(zod.string()),
   ritualImages: zod.array(zod.string()),
+  rituals: zod.array(
+    zod.object({
+      image: zod.string(),
+      description: zod.string(),
+      videoUrl: zod.string().optional(),
+    }),
+  ),
   videoUrl: zod.string().optional(),
   videoTitle: zod.string().optional(),
 });

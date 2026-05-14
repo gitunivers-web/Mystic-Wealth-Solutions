@@ -11,7 +11,7 @@ const rituelsAnnotes = [
   },
   {
     titre: "Rituel de Retour Affectif",
-    description: "Par la force du lien invisible qui unit deux âmes, Maître Séraphin utilise des herbes rares et des incantations transmises de génération en génération pour raviver la flamme et forcer le retour de l'être aimé. Même les cas les plus désespérés ont été résolus.",
+    description: "Par la force du lien invisible qui unit deux âmes, Maître Zonon utilise des herbes rares et des incantations transmises de génération en génération pour raviver la flamme et forcer le retour de l'être aimé. Même les cas les plus désespérés ont été résolus.",
     details: ["Rituel personnalisé sur photo", "Action en 7 à 21 jours", "Applicable à distance", "Discrétion absolue garantie"],
     couleur: "from-red-900/20",
   },
@@ -29,7 +29,7 @@ const rituelsAnnotes = [
   },
   {
     titre: "Rituel de Fertilité",
-    description: "Les blocages spirituels sont souvent la cause cachée de l'infertilité. Maître Séraphin identifie et lève ces blocages grâce à des rituels anciens impliquant des plantes médicinales sacrées et des bains purificateurs. Des milliers de naissances miraculeuses en témoignent.",
+    description: "Les blocages spirituels sont souvent la cause cachée de l'infertilité. Maître Zonon identifie et lève ces blocages grâce à des rituels anciens impliquant des plantes médicinales sacrées et des bains purificateurs. Des milliers de naissances miraculeuses en témoignent.",
     details: ["Applicable à l'homme et la femme", "Aucun effet secondaire", "Complément aux traitements médicaux", "Résultats en 2 à 6 mois"],
     couleur: "from-green-900/20",
   },
@@ -41,19 +41,23 @@ const rituelsAnnotes = [
   },
 ];
 
-const FALLBACK_RITUALS = [
-  "/gallery-1.png", "/gallery-2.png", "/gallery-3.png",
-  "/gallery-4.png", "/gallery-5.png", "/gallery-6.png",
-];
+function isLocalVideo(url: string) {
+  return url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg");
+}
+
+function getEmbedUrl(url: string) {
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&modestbranding=1`;
+  const vmMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vmMatch) return `https://player.vimeo.com/video/${vmMatch[1]}`;
+  return url;
+}
 
 export default function Rituels() {
   const { data: settings } = useGetSettings();
-  const siteName = settings?.siteName || "Maître Séraphin";
-  const ritualImages = settings?.ritualImages?.length
-    ? settings.ritualImages
-    : settings?.ceremonyImages?.length
-      ? settings.ceremonyImages
-      : FALLBACK_RITUALS;
+  const siteName = settings?.siteName || "Maître Zonon 666";
+
+  const rituals = settings?.rituals?.length ? settings.rituals : null;
 
   return (
     <div className="w-full min-h-screen bg-background">
@@ -73,55 +77,76 @@ export default function Rituels() {
         </div>
       </section>
 
-      {/* Photo Gallery with Annotations */}
-      {ritualImages.length > 0 && (
+      {/* Galerie Sacrée — Rituels avec descriptions et vidéos */}
+      {rituals && rituals.length > 0 && (
         <section className="py-20 w-full overflow-hidden">
           <div className="container mx-auto px-4 mb-12 text-center">
             <h2 className="text-primary tracking-widest uppercase text-xs font-semibold mb-4">Galerie Sacrée</h2>
             <h3 className="text-3xl font-serif font-bold text-white">Le Sanctuaire en Images</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
-            {ritualImages.map((img, i) => {
-              const annotations = [
-                "Rituel de richesse — une fois accompli, il ouvre les portes de l'abondance financière",
-                "Protection contre les sorts maléfiques — sacrifice réalisé pour immuniser la personne contre toute attaque spirituelle",
-                "Offrandes aux esprits gardiens de la prospérité",
-                "Offrande sacrée — protège l'intégralité du foyer, attire la richesse et apaise les conflits conjugaux",
-                "Invocation des forces de l'abondance et de la richesse",
-                "Rituel de retour affectif — lien sacré entre deux âmes",
-                "Cérémonie de désenvoûtement et purification totale",
-                "Rituel de chance — alignement des forces cosmiques",
-              ];
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: (i % 3) * 0.1 }}
-                  className="relative group overflow-hidden aspect-square"
-                  data-testid={`ritual-image-${i}`}
-                >
+          <div className="container mx-auto px-4 space-y-16">
+            {rituals.map((ritual, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
+                data-testid={`ritual-item-${i}`}
+              >
+                {/* Image */}
+                <div className={`relative group overflow-hidden aspect-[4/3] border border-white/5 ${i % 2 === 1 ? "lg:order-2" : ""}`}>
                   <img
-                    src={img}
-                    alt={annotations[i % annotations.length]}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    src={ritual.image}
+                    alt={ritual.description}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="text-primary text-xs uppercase tracking-widest mb-1 font-semibold">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute top-4 left-4 bg-black/60 border border-primary/30 px-3 py-1">
+                    <span className="text-primary text-xs font-bold uppercase tracking-widest">
                       Rituel {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Texte + vidéo */}
+                <div className={`space-y-5 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
+                  <div className="text-primary text-2xl">✦</div>
+                  <p className="text-white text-lg font-medium leading-relaxed">{ritual.description}</p>
+
+                  {ritual.videoUrl && (
+                    <div className="space-y-2">
+                      <p className="text-xs text-muted-foreground uppercase tracking-widest">Vidéo du rituel</p>
+                      <div className="aspect-video border border-white/10 overflow-hidden">
+                        {isLocalVideo(ritual.videoUrl) ? (
+                          <video
+                            src={ritual.videoUrl}
+                            controls
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <iframe
+                            src={getEmbedUrl(ritual.videoUrl)}
+                            title={ritual.description}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="w-full h-full"
+                          />
+                        )}
+                      </div>
                     </div>
-                    <p className="text-white text-sm font-medium leading-tight">
-                      {annotations[i % annotations.length]}
-                    </p>
-                  </div>
-                  <div className="absolute top-4 right-4 w-8 h-8 border border-primary/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="text-primary text-xs">✦</span>
-                  </div>
-                </motion.div>
-              );
-            })}
+                  )}
+
+                  <Link
+                    href={`/contact?subject=${encodeURIComponent("Demande de rituel")}`}
+                    className="inline-block text-xs uppercase tracking-widest text-primary hover:text-white transition-colors border-b border-primary/40 pb-0.5"
+                  >
+                    Demander ce rituel →
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
       )}

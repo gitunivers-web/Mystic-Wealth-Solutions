@@ -5,6 +5,7 @@
  * API specification for Site Voyance Premium
  * OpenAPI spec version: 0.1.0
  */
+import type { RitualItem } from "./ritualItem";
 
 export interface SiteSettings {
   siteName: string;
@@ -17,6 +18,7 @@ export interface SiteSettings {
   aboutImage: string;
   ceremonyImages: string[];
   ritualImages: string[];
+  rituals: RitualItem[];
   videoUrl?: string;
   videoTitle?: string;
 }

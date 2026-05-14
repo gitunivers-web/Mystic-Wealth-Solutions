@@ -12,6 +12,7 @@ export * from "./contactInput";
 export * from "./contactMessage";
 export * from "./errorResponse";
 export * from "./healthStatus";
+export * from "./ritualItem";
 export * from "./siteSettings";
 export * from "./siteSettingsUpdate";
 export * from "./successResponse";

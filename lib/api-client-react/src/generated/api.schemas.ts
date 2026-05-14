@@ -18,6 +18,12 @@ export interface AdminAuthResult {
   token: string;
 }
 
+export interface RitualItem {
+  image: string;
+  description: string;
+  videoUrl?: string;
+}
+
 export interface SiteSettings {
   siteName: string;
   phone: string;
@@ -29,6 +35,7 @@ export interface SiteSettings {
   aboutImage: string;
   ceremonyImages: string[];
   ritualImages: string[];
+  rituals: RitualItem[];
   videoUrl?: string;
   videoTitle?: string;
 }
@@ -44,6 +51,7 @@ export interface SiteSettingsUpdate {
   aboutImage?: string;
   ceremonyImages?: string[];
   ritualImages?: string[];
+  rituals?: RitualItem[];
   videoUrl?: string;
   videoTitle?: string;
 }

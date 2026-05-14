@@ -180,9 +180,20 @@ components:
         token:
           type: string
 
+    RitualItem:
+      type: object
+      required: [image, description]
+      properties:
+        image:
+          type: string
+        description:
+          type: string
+        videoUrl:
+          type: string
+
     SiteSettings:
       type: object
-      required: [siteName, phone, whatsapp, address, email, web3formsKey, heroImage, aboutImage, ceremonyImages, ritualImages]
+      required: [siteName, phone, whatsapp, address, email, web3formsKey, heroImage, aboutImage, ceremonyImages, ritualImages, rituals]
       properties:
         siteName:
           type: string
@@ -208,6 +219,10 @@ components:
           type: array
           items:
             type: string
+        rituals:
+          type: array
+          items:
+            $ref: "#/components/schemas/RitualItem"
         videoUrl:
           type: string
         videoTitle:
@@ -240,6 +255,10 @@ components:
           type: array
           items:
             type: string
+        rituals:
+          type: array
+          items:
+            $ref: "#/components/schemas/RitualItem"
         videoUrl:
           type: string
         videoTitle:

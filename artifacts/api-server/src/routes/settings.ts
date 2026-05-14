@@ -31,6 +31,12 @@ const DEFAULT_SETTINGS: Record<string, string> = {
     "/ritual-divinite.jpg",
     "/ritual-sacrifice.jpg",
   ]),
+  rituals: JSON.stringify([
+    { image: "/ritual-argent.jpg", description: "Rituel de richesse — une fois accompli, il ouvre les portes de l'abondance financière", videoUrl: "/video-rituel.mp4" },
+    { image: "/ritual-protection.jpg", description: "Protection contre les sorts maléfiques — sacrifice réalisé pour immuniser la personne contre toute attaque spirituelle", videoUrl: "" },
+    { image: "/ritual-divinite.jpg", description: "Offrandes aux esprits gardiens de la prospérité", videoUrl: "" },
+    { image: "/ritual-sacrifice.jpg", description: "Offrande sacrée — protège l'intégralité du foyer, attire la richesse et apaise les conflits conjugaux", videoUrl: "" },
+  ]),
   videoUrl: "/video-rituel.mp4",
   videoTitle: "Le Maître Zonon 666 en Action",
 };
@@ -52,6 +58,8 @@ function mapToSettings(map: Record<string, string>) {
   try { ceremonyImages = JSON.parse(map.ceremonyImages || "[]"); } catch { ceremonyImages = []; }
   let ritualImages: string[] = [];
   try { ritualImages = JSON.parse(map.ritualImages || "[]"); } catch { ritualImages = []; }
+  let rituals: { image: string; description: string; videoUrl?: string }[] = [];
+  try { rituals = JSON.parse(map.rituals || "[]"); } catch { rituals = []; }
   return {
     siteName: map.siteName,
     phone: map.phone,
@@ -63,6 +71,7 @@ function mapToSettings(map: Record<string, string>) {
     aboutImage: map.aboutImage,
     ceremonyImages,
     ritualImages,
+    rituals,
     videoUrl: map.videoUrl,
     videoTitle: map.videoTitle,
   };
@@ -105,6 +114,7 @@ router.patch("/settings", async (req, res) => {
     if (body.aboutImage !== undefined) updates.push(["aboutImage", body.aboutImage]);
     if (body.ceremonyImages !== undefined) updates.push(["ceremonyImages", JSON.stringify(body.ceremonyImages)]);
     if (body.ritualImages !== undefined) updates.push(["ritualImages", JSON.stringify(body.ritualImages)]);
+    if (body.rituals !== undefined) updates.push(["rituals", JSON.stringify(body.rituals)]);
     if (body.videoUrl !== undefined) updates.push(["videoUrl", body.videoUrl]);
     if (body.videoTitle !== undefined) updates.push(["videoTitle", body.videoTitle]);
 

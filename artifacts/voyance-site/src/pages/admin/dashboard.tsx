@@ -14,6 +14,7 @@ import { ExternalLink } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { MultiImageUploader } from "@/components/admin/multi-image-uploader";
+import { RitualEditor, type RitualItem } from "@/components/admin/ritual-editor";
 
 type FormValues = {
   siteName: string;
@@ -49,6 +50,7 @@ export default function AdminDashboard() {
   // Arrays managed separately (not via react-hook-form)
   const [ceremonyImages, setCeremonyImages] = useState<string[]>([]);
   const [ritualImages, setRitualImages] = useState<string[]>([]);
+  const [rituals, setRituals] = useState<RitualItem[]>([]);
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -74,12 +76,17 @@ export default function AdminDashboard() {
       });
       setCeremonyImages(settings.ceremonyImages || []);
       setRitualImages(settings.ritualImages || []);
+      setRituals((settings.rituals || []).map(r => ({
+        image: r.image,
+        description: r.description,
+        videoUrl: r.videoUrl ?? "",
+      })));
     }
   }, [settings, form]);
 
   const onSubmit = (values: FormValues) => {
     updateSettings.mutate({
-      data: { ...values, ceremonyImages, ritualImages }
+      data: { ...values, ceremonyImages, ritualImages, rituals }
     }, {
       onSuccess: (data) => {
         toast({ title: "Modifications sauvegardées", description: "Le site a été mis à jour." });
@@ -233,15 +240,8 @@ export default function AdminDashboard() {
                 />
               </Section>
 
-              <Section title="Galerie — Rituels">
-                <p className="text-xs text-muted-foreground/50 -mt-2">
-                  Images affichées sur la page Rituels avec annotations.
-                </p>
-                <MultiImageUploader
-                  label="Images de rituels"
-                  values={ritualImages}
-                  onChange={setRitualImages}
-                />
+              <Section title="Rituels — Image + Description + Vidéo">
+                <RitualEditor items={rituals} onChange={setRituals} />
               </Section>
 
               <Section title="Section Vidéo">
