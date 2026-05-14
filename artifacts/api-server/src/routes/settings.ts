@@ -32,7 +32,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
     "/ritual-sacrifice.jpg",
   ]),
   rituals: JSON.stringify([
-    { image: "/ritual-argent.jpg", description: "Rituel de richesse — une fois accompli, il ouvre les portes de l'abondance financière", videoUrl: "/video-rituel.mp4" },
+    { image: "/ritual-argent.jpg", description: "Rituel de richesse — une fois accompli, il ouvre les portes de l'abondance financière", videoUrl: "/video-argent.mp4" },
     { image: "/ritual-protection.jpg", description: "Protection contre les sorts maléfiques — sacrifice réalisé pour immuniser la personne contre toute attaque spirituelle", videoUrl: "" },
     { image: "/ritual-divinite.jpg", description: "Offrandes aux esprits gardiens de la prospérité", videoUrl: "" },
     { image: "/ritual-sacrifice.jpg", description: "Offrande sacrée — protège l'intégralité du foyer, attire la richesse et apaise les conflits conjugaux", videoUrl: "" },
