@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import {
@@ -12,11 +12,20 @@ import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { ExternalLink } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
+import { ImageUploader } from "@/components/admin/image-uploader";
+import { MultiImageUploader } from "@/components/admin/multi-image-uploader";
 
 type FormValues = {
-  siteName: string; phone: string; whatsapp: string; address: string;
-  email: string; web3formsKey: string; heroImage: string; aboutImage: string;
-  ceremonyImages: string; ritualImages: string; videoUrl: string; videoTitle: string;
+  siteName: string;
+  phone: string;
+  whatsapp: string;
+  address: string;
+  email: string;
+  web3formsKey: string;
+  heroImage: string;
+  aboutImage: string;
+  videoUrl: string;
+  videoTitle: string;
 };
 
 export default function AdminDashboard() {
@@ -28,16 +37,24 @@ export default function AdminDashboard() {
   useEffect(() => { if (!token) setLocation("/admin"); }, [token, setLocation]);
 
   const { data: settings, isLoading } = useGetSettings();
-  const { data: messages, isLoading: loadingMessages } = useGetMessages({ request: { headers: { Authorization: `Bearer ${token}` } } });
+  const { data: messages, isLoading: loadingMessages } = useGetMessages({
+    request: { headers: { Authorization: `Bearer ${token}` } }
+  });
   const { data: health } = useHealthCheck();
-  const updateSettings = useUpdateSettings({ request: { headers: { Authorization: `Bearer ${token}` } } });
+  const updateSettings = useUpdateSettings({
+    request: { headers: { Authorization: `Bearer ${token}` } }
+  });
   const logoutMutation = useAdminLogout();
+
+  // Arrays managed separately (not via react-hook-form)
+  const [ceremonyImages, setCeremonyImages] = useState<string[]>([]);
+  const [ritualImages, setRitualImages] = useState<string[]>([]);
 
   const form = useForm<FormValues>({
     defaultValues: {
       siteName: "", phone: "", whatsapp: "", address: "", email: "",
       web3formsKey: "", heroImage: "", aboutImage: "",
-      ceremonyImages: "", ritualImages: "", videoUrl: "", videoTitle: ""
+      videoUrl: "", videoTitle: ""
     }
   });
 
@@ -52,50 +69,67 @@ export default function AdminDashboard() {
         web3formsKey: settings.web3formsKey || "",
         heroImage: settings.heroImage || "",
         aboutImage: settings.aboutImage || "",
-        ceremonyImages: settings.ceremonyImages?.join(",") || "",
-        ritualImages: settings.ritualImages?.join(",") || "",
         videoUrl: settings.videoUrl || "",
         videoTitle: settings.videoTitle || "",
       });
+      setCeremonyImages(settings.ceremonyImages || []);
+      setRitualImages(settings.ritualImages || []);
     }
   }, [settings, form]);
 
   const onSubmit = (values: FormValues) => {
-    const payload = {
-      ...values,
-      ceremonyImages: values.ceremonyImages.split(",").map(s => s.trim()).filter(Boolean),
-      ritualImages: values.ritualImages.split(",").map(s => s.trim()).filter(Boolean),
-    };
-    updateSettings.mutate({ data: payload }, {
+    updateSettings.mutate({
+      data: { ...values, ceremonyImages, ritualImages }
+    }, {
       onSuccess: (data) => {
         toast({ title: "Modifications sauvegardées", description: "Le site a été mis à jour." });
         queryClient.setQueryData(getGetSettingsQueryKey(), data);
       },
-      onError: () => toast({ variant: "destructive", title: "Erreur", description: "Échec de la sauvegarde." })
+      onError: () => toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Échec de la sauvegarde."
+      })
     });
   };
 
   const handleLogout = () => {
-    logoutMutation.mutate(undefined, { onSettled: () => { localStorage.removeItem("adminToken"); setLocation("/admin"); } });
+    logoutMutation.mutate(undefined, {
+      onSettled: () => { localStorage.removeItem("adminToken"); setLocation("/admin"); }
+    });
   };
 
   if (!token) return null;
-  if (isLoading) return <div className="min-h-screen bg-background flex items-center justify-center text-primary font-serif text-xl">Chargement...</div>;
+  if (isLoading) return (
+    <div className="min-h-screen bg-background flex items-center justify-center text-primary font-serif text-xl">
+      Chargement...
+    </div>
+  );
 
-  const F = ({ name, label, placeholder, type = "text" }: { name: keyof FormValues; label: string; placeholder?: string; type?: string }) => (
+  const F = ({ name, label, placeholder, type = "text" }: {
+    name: keyof FormValues; label: string; placeholder?: string; type?: string;
+  }) => (
     <FormField control={form.control} name={name} render={({ field }) => (
       <FormItem>
         <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">{label}</FormLabel>
         <FormControl>
-          <Input type={type} className="bg-background rounded-none border-white/10 text-white focus:border-primary/50" placeholder={placeholder} {...field} data-testid={`input-${name}`} />
+          <Input
+            type={type}
+            className="bg-background rounded-none border-white/10 text-white focus:border-primary/50"
+            placeholder={placeholder}
+            {...field}
+            data-testid={`input-${name}`}
+          />
         </FormControl>
       </FormItem>
     )} />
   );
 
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="bg-card border border-white/5 p-6 space-y-4">
-      <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-white/5 pb-3">{title}</h3>
+    <div className="bg-card border border-white/5 p-6 space-y-5">
+      <h3 className="text-xs font-bold text-primary uppercase tracking-widest border-b border-white/5 pb-3">
+        {title}
+      </h3>
       {children}
     </div>
   );
@@ -114,13 +148,21 @@ export default function AdminDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <a href="/" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-white/10 text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors text-xs uppercase tracking-widest">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 border border-white/10 text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors text-xs uppercase tracking-widest"
+            >
               <ExternalLink size={12} />
               Voir le site
             </a>
-            <Button variant="outline" onClick={handleLogout} data-testid="btn-logout"
-              className="border-primary/30 text-primary hover:bg-primary/10 rounded-none text-xs uppercase tracking-widest">
+            <Button
+              variant="outline"
+              onClick={handleLogout}
+              data-testid="btn-logout"
+              className="border-primary/30 text-primary hover:bg-primary/10 rounded-none text-xs uppercase tracking-widest"
+            >
               Déconnexion
             </Button>
           </div>
@@ -128,7 +170,8 @@ export default function AdminDashboard() {
       </header>
 
       <main className="container mx-auto px-4 mt-8 grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Settings */}
+
+        {/* ═══ Paramètres ═══ */}
         <div className="xl:col-span-1 space-y-5">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -145,45 +188,107 @@ export default function AdminDashboard() {
                 <F name="web3formsKey" label="Clé Web3Forms (réception emails)" type="password" placeholder="••••••••••••" />
               </Section>
 
-              <Section title="Images (URLs)">
-                <p className="text-xs text-muted-foreground/50">Entrez des URLs d'images directes (https://...). Pour plusieurs images, séparez par des virgules.</p>
-                <F name="heroImage" label="Image Hero (fond accueil)" placeholder="https://..." />
-                <F name="aboutImage" label="Portrait du Maître" placeholder="https://..." />
-                <F name="ceremonyImages" label="Galerie cérémonie (URLs séparées par ,)" placeholder="https://img1.jpg, https://img2.jpg" />
-                <F name="ritualImages" label="Images Rituels (URLs séparées par ,)" placeholder="https://img1.jpg, https://img2.jpg" />
+              <Section title="Image Hero (fond de la page d'accueil)">
+                <p className="text-xs text-muted-foreground/50 -mt-2">
+                  Chargez une image depuis votre appareil ou collez une URL.
+                </p>
+                <FormField
+                  control={form.control}
+                  name="heroImage"
+                  render={({ field }) => (
+                    <ImageUploader
+                      label="Image de fond — Accueil"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              </Section>
+
+              <Section title="Portrait du Maître">
+                <p className="text-xs text-muted-foreground/50 -mt-2">
+                  Photo du Maître affichée dans la section "À propos".
+                </p>
+                <FormField
+                  control={form.control}
+                  name="aboutImage"
+                  render={({ field }) => (
+                    <ImageUploader
+                      label="Photo du Maître"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              </Section>
+
+              <Section title="Galerie — Cérémonies">
+                <p className="text-xs text-muted-foreground/50 -mt-2">
+                  Ces images défilent sur la page d'accueil et servent aussi de fond au hero. Chargez plusieurs images à la fois.
+                </p>
+                <MultiImageUploader
+                  label="Images de cérémonie"
+                  values={ceremonyImages}
+                  onChange={setCeremonyImages}
+                />
+              </Section>
+
+              <Section title="Galerie — Rituels">
+                <p className="text-xs text-muted-foreground/50 -mt-2">
+                  Images affichées sur la page Rituels avec annotations.
+                </p>
+                <MultiImageUploader
+                  label="Images de rituels"
+                  values={ritualImages}
+                  onChange={setRitualImages}
+                />
               </Section>
 
               <Section title="Section Vidéo">
-                <p className="text-xs text-muted-foreground/50">Entrez une URL YouTube ou Vimeo pour afficher une vidéo sur la page d'accueil.</p>
-                <F name="videoUrl" label="URL de la vidéo (YouTube / Vimeo)" placeholder="https://www.youtube.com/watch?v=..." />
+                <p className="text-xs text-muted-foreground/50 -mt-2">
+                  Collez un lien YouTube ou Vimeo. La section vidéo n'apparaît sur le site que si ce champ est rempli.
+                </p>
+                <F name="videoUrl" label="URL vidéo (YouTube / Vimeo)" placeholder="https://www.youtube.com/watch?v=..." />
                 <F name="videoTitle" label="Titre de la section vidéo" placeholder="Le Maître en Action..." />
               </Section>
 
-              <Button type="submit" disabled={updateSettings.isPending} data-testid="btn-save"
-                className="w-full rounded-none bg-primary text-background font-bold hover:bg-primary/90 uppercase tracking-widest text-xs py-4">
+              <Button
+                type="submit"
+                disabled={updateSettings.isPending}
+                data-testid="btn-save"
+                className="w-full rounded-none bg-primary text-background font-bold hover:bg-primary/90 uppercase tracking-widest text-xs py-4"
+              >
                 {updateSettings.isPending ? "Sauvegarde en cours..." : "Enregistrer toutes les modifications"}
               </Button>
             </form>
           </Form>
         </div>
 
-        {/* Messages */}
+        {/* ═══ Messages ═══ */}
         <div className="xl:col-span-2">
           <div className="bg-card border border-white/5 p-6">
             <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-6">
               <h2 className="text-xs font-bold text-primary uppercase tracking-widest">Messages Reçus</h2>
               {messages && messages.length > 0 && (
-                <span className="bg-primary text-background text-xs px-2 py-0.5 font-bold">{messages.length}</span>
+                <span className="bg-primary text-background text-xs px-2 py-0.5 font-bold">
+                  {messages.length}
+                </span>
               )}
             </div>
             {loadingMessages ? (
               <div className="text-muted-foreground py-8 text-center text-sm">Chargement...</div>
             ) : !messages || messages.length === 0 ? (
-              <div className="text-muted-foreground py-16 text-center text-sm italic">Aucun message reçu pour le moment.</div>
+              <div className="text-muted-foreground py-16 text-center text-sm italic">
+                Aucun message reçu pour le moment.
+              </div>
             ) : (
               <div className="space-y-4 max-h-[75vh] overflow-y-auto pr-2">
                 {messages.map((msg) => (
-                  <div key={msg.id} className="border border-white/5 bg-background p-5 hover:border-primary/20 transition-colors" data-testid={`msg-${msg.id}`}>
+                  <div
+                    key={msg.id}
+                    className="border border-white/5 bg-background p-5 hover:border-primary/20 transition-colors"
+                    data-testid={`msg-${msg.id}`}
+                  >
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
                       <div>
                         <div className="font-bold text-primary text-sm">{msg.subject}</div>
@@ -194,7 +299,10 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="text-xs text-muted-foreground whitespace-nowrap">
-                        {new Date(msg.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                        {new Date(msg.createdAt).toLocaleDateString("fr-FR", {
+                          day: "numeric", month: "long", year: "numeric",
+                          hour: "2-digit", minute: "2-digit"
+                        })}
                       </div>
                     </div>
                     <div className="text-muted-foreground bg-card p-4 border-l-2 border-primary/30 whitespace-pre-wrap text-sm leading-relaxed mt-3">
@@ -206,6 +314,7 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
+
       </main>
     </div>
   );
