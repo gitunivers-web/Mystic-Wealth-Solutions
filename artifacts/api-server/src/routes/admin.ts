@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AdminLoginBody } from "@workspace/api-zod";
 import crypto from "crypto";
+import { loginLimiter } from "../middleware/rate-limit";
 
 const router = Router();
 
@@ -9,7 +10,7 @@ if (!ADMIN_PASSWORD) {
   throw new Error("ADMIN_PASSWORD environment variable is required");
 }
 
-router.post("/admin/login", (req, res) => {
+router.post("/admin/login", loginLimiter, (req, res) => {
   try {
     const body = AdminLoginBody.parse(req.body);
     if (body.password !== ADMIN_PASSWORD) {

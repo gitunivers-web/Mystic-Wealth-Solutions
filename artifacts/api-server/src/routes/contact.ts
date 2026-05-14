@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { db, contactMessagesTable, siteSettingsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { SubmitContactBody } from "@workspace/api-zod";
+import { contactLimiter } from "../middleware/rate-limit";
 
 const router = Router();
 
-router.post("/contact", async (req, res) => {
+router.post("/contact", contactLimiter, async (req, res) => {
   try {
     const body = SubmitContactBody.parse(req.body);
 
@@ -30,7 +31,7 @@ router.post("/contact", async (req, res) => {
             name: body.name,
             email: body.email,
             phone: body.phone || "",
-            subject: `[Maître Séraphin] ${body.subject}`,
+            subject: `[Maître Zonon 666] ${body.subject}`,
             message: body.message,
           }),
         });
@@ -61,7 +62,7 @@ router.get("/messages", async (req, res) => {
   }
 
   try {
-    const messages = await db.select().from(contactMessagesTable).orderBy(contactMessagesTable.createdAt);
+    const messages = await db.select().from(contactMessagesTable).orderBy(desc(contactMessagesTable.createdAt));
     const formatted = messages.map((m) => ({
       id: m.id,
       name: m.name,
