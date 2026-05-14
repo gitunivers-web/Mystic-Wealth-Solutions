@@ -16,19 +16,33 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   address: "Quartier Ahouandjigo, Lokossa — Bénin",
   email: "contact@maitrezonon666.com",
   web3formsKey: "",
-  heroImage: "",
-  aboutImage: "",
-  ceremonyImages: "[]",
-  ritualImages: "[]",
-  videoUrl: "",
-  videoTitle: "Le Maître en Action — Voyez la Puissance à l'Œuvre",
+  heroImage: "/hero-bg.jpg",
+  aboutImage: "/maitre-zonon.jpg",
+  ceremonyImages: JSON.stringify([
+    "/ceremony-1.jpg",
+    "/ceremony-2.jpg",
+    "/ceremony-3.jpg",
+    "/ceremony-4.jpg",
+    "/ceremony-5.jpg",
+  ]),
+  ritualImages: JSON.stringify([
+    "/ritual-argent.jpg",
+    "/ritual-protection.jpg",
+    "/ritual-divinite.jpg",
+    "/ritual-sacrifice.jpg",
+  ]),
+  videoUrl: "/video-rituel.mp4",
+  videoTitle: "Le Maître Zonon 666 en Action",
 };
 
 async function getSettingsMap(): Promise<Record<string, string>> {
   const rows = await db.select().from(siteSettingsTable);
   const map: Record<string, string> = { ...DEFAULT_SETTINGS };
   for (const row of rows) {
-    map[row.key] = row.value;
+    // Only override default if DB value is non-empty
+    if (row.value !== "" && row.value !== "[]") {
+      map[row.key] = row.value;
+    }
   }
   return map;
 }

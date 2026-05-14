@@ -159,6 +159,9 @@ function AutoScrollGallery({ images }: { images: string[] }) {
 }
 
 function VideoSection({ videoUrl, videoTitle }: { videoUrl: string; videoTitle: string }) {
+  const isLocalVideo = (url: string) =>
+    url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg") || url.startsWith("/");
+
   const getEmbedUrl = (url: string) => {
     const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
     if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&modestbranding=1`;
@@ -178,13 +181,22 @@ function VideoSection({ videoUrl, videoTitle }: { videoUrl: string; videoTitle: 
         <div className="max-w-4xl mx-auto">
           <div className="relative aspect-video border border-white/10 overflow-hidden shadow-2xl">
             <div className="absolute inset-0 border border-primary/20 pointer-events-none z-10" />
-            <iframe
-              src={getEmbedUrl(videoUrl)}
-              title={videoTitle || "Rituel Maître Zonon 666"}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
+            {isLocalVideo(videoUrl) ? (
+              <video
+                src={videoUrl}
+                controls
+                className="w-full h-full object-cover"
+                title={videoTitle || "Rituel Maître Zonon 666"}
+              />
+            ) : (
+              <iframe
+                src={getEmbedUrl(videoUrl)}
+                title={videoTitle || "Rituel Maître Zonon 666"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            )}
           </div>
         </div>
         <div className="text-center mt-10">
