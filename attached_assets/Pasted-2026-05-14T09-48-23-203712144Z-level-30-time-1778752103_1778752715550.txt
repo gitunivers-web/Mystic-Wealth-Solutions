@@ -1,0 +1,83 @@
+2026-05-14T09:48:23.203712144Z {"level":30,"time":1778752103014,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":19,"method":"GET","url":"/gallery-1.png"},"res":{"statusCode":200},"responseTime":53,"msg":"request completed"}
+2026-05-14T09:48:23.307050591Z {"level":30,"time":1778752103306,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":23,"method":"GET","url":"/gallery-6.png"},"res":{"statusCode":200},"responseTime":201,"msg":"request completed"}
+2026-05-14T09:48:23.307837959Z {"level":30,"time":1778752103307,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":24,"method":"GET","url":"/gallery-5.png"},"res":{"statusCode":200},"responseTime":202,"msg":"request completed"}
+2026-05-14T09:48:24.71022471Z {"level":30,"time":1778752104710,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":25,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":6,"msg":"request completed"}
+2026-05-14T09:48:24.715197887Z {"level":30,"time":1778752104715,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":27,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:48:24.716240227Z {"level":30,"time":1778752104716,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":26,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":3,"msg":"request completed"}
+2026-05-14T09:48:30.915979414Z {"level":30,"time":1778752110915,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":28,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":2,"msg":"request completed"}
+2026-05-14T09:48:31.885301096Z {"level":30,"time":1778752111885,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":29,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":3,"msg":"request completed"}
+2026-05-14T09:48:31.890174654Z {"level":30,"time":1778752111889,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":30,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":0,"msg":"request completed"}
+2026-05-14T09:49:15.349532877Z {"level":30,"time":1778752155349,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":31,"method":"GET","url":"/api/healthz"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:49:15.406546609Z {"level":30,"time":1778752155406,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","status":200,"url":"https://maitre-zonon-db.onrender.com/api/healthz","msg":"Self-ping OK"}
+2026-05-14T09:50:31.797063925Z {"level":30,"time":1778752231795,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":32,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":31,"msg":"request completed"}
+2026-05-14T09:51:28.620180134Z {"level":30,"time":1778752288619,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":34,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":0,"msg":"request completed"}
+2026-05-14T09:51:28.621030417Z {"level":30,"time":1778752288620,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":33,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":21,"msg":"request completed"}
+2026-05-14T09:52:22.322282592Z ==> Detected service running on port 10000
+2026-05-14T09:52:22.760019123Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2026-05-14T09:52:29.462974Z {"level":30,"time":1778752349462,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":35,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":21,"msg":"request completed"}
+2026-05-14T09:54:10.884893018Z {"level":30,"time":1778752450884,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":36,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":30,"msg":"request completed"}
+2026-05-14T09:54:17.714623834Z {"level":30,"time":1778752457714,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":37,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":3,"msg":"request completed"}
+2026-05-14T09:54:17.719289795Z {"level":30,"time":1778752457719,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":38,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:54:18.46683291Z {"level":30,"time":1778752458465,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":39,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":4,"msg":"request completed"}
+2026-05-14T09:54:18.482787389Z {"level":30,"time":1778752458480,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":40,"method":"PATCH","url":"/api/settings"},"res":{"statusCode":413},"responseTime":14,"msg":"request completed"}
+2026-05-14T09:54:18.482826012Z PayloadTooLargeError: request entity too large
+2026-05-14T09:54:18.482830783Z     at readStream (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:5362:21)
+2026-05-14T09:54:18.482833753Z     at getRawBody (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:5343:16)
+2026-05-14T09:54:18.482837023Z     at read (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:15530:7)
+2026-05-14T09:54:18.482839953Z     at jsonParser (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:15666:9)
+2026-05-14T09:54:18.482843634Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T09:54:18.482846744Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T09:54:18.482849374Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T09:54:18.482852134Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T09:54:18.482855095Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T09:54:18.482858005Z     at cors2 (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23784:11)
+2026-05-14T09:55:27.096801547Z {"level":30,"time":1778752527096,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":41,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":34,"msg":"request completed"}
+2026-05-14T09:55:27.380576018Z {"level":30,"time":1778752527380,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":42,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:55:27.392314685Z {"level":30,"time":1778752527392,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":43,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":4,"msg":"request completed"}
+2026-05-14T09:55:27.938101338Z {"level":30,"time":1778752527937,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":44,"method":"GET","url":"/gallery-6.png"},"res":{"statusCode":200},"responseTime":9,"msg":"request completed"}
+2026-05-14T09:55:33.897125715Z {"level":30,"time":1778752533896,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":45,"method":"GET","url":"/gallery-1.png"},"res":{"statusCode":200},"responseTime":12,"msg":"request completed"}
+2026-05-14T09:55:34.45726547Z {"level":30,"time":1778752534457,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":46,"method":"PATCH","url":"/api/settings"},"res":{"statusCode":413},"responseTime":13,"msg":"request completed"}
+2026-05-14T09:55:34.457426264Z PayloadTooLargeError: request entity too large
+2026-05-14T09:55:34.457442865Z     at readStream (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:5362:21)
+2026-05-14T09:55:34.457448255Z     at getRawBody (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:5343:16)
+2026-05-14T09:55:34.457453166Z     at read (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:15530:7)
+2026-05-14T09:55:34.457458056Z     at jsonParser (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:15666:9)
+2026-05-14T09:55:34.457463347Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T09:55:34.457477938Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T09:55:34.457479998Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T09:55:34.457482088Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T09:55:34.457484198Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T09:55:34.457486259Z     at cors2 (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23784:11)
+2026-05-14T09:55:40.389927894Z {"level":30,"time":1778752540389,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":47,"method":"GET","url":"/gallery-2.png"},"res":{"statusCode":200},"responseTime":11,"msg":"request completed"}
+2026-05-14T09:55:48.172383268Z {"level":30,"time":1778752548172,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":48,"method":"GET","url":"/api/settings"},"res":{"statusCode":200},"responseTime":24,"msg":"request completed"}
+2026-05-14T09:55:49.456134735Z {"level":30,"time":1778752549455,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":49,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":3,"msg":"request completed"}
+2026-05-14T09:55:49.467637432Z {"level":30,"time":1778752549467,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":50,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":0,"msg":"request completed"}
+2026-05-14T09:55:49.832014029Z {"level":30,"time":1778752549831,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":51,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:55:50.196232912Z {"level":30,"time":1778752550195,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":52,"method":"GET","url":"/assets/index-DgKnVpnT.css"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-05-14T09:55:50.199895166Z {"level":30,"time":1778752550199,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":53,"method":"GET","url":"/assets/index-CTmACIzX.js"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-05-14T09:55:52.750678326Z {"level":30,"time":1778752552750,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":54,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":3,"msg":"request completed"}
+2026-05-14T09:55:53.89640934Z {"level":30,"time":1778752553896,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":55,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-05-14T09:55:54.682910009Z {"level":30,"time":1778752554682,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":56,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:55:55.833528832Z {"level":30,"time":1778752555833,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":57,"method":"GET","url":"/favicon.svg"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-05-14T09:56:14.818031755Z {"level":30,"time":1778752574817,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":58,"method":"GET","url":"/gallery-3.png"},"res":{"statusCode":200},"responseTime":8,"msg":"request completed"}
+2026-05-14T09:56:27.155331818Z {"level":30,"time":1778752587155,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":59,"method":"GET","url":"/gallery-6.png"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-05-14T09:57:37.622037701Z {"level":30,"time":1778752657621,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":60,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":0,"msg":"request completed"}
+2026-05-14T09:57:37.704794664Z {"level":30,"time":1778752657704,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":62,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":74,"msg":"request completed"}
+2026-05-14T09:57:37.705908699Z {"level":30,"time":1778752657705,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":61,"method":"GET","url":"/api/settings"},"res":{"statusCode":304},"responseTime":77,"msg":"request completed"}
+2026-05-14T09:57:38.522834249Z {"level":30,"time":1778752658522,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":63,"method":"PATCH","url":"/api/settings"},"res":{"statusCode":413},"responseTime":16,"msg":"request completed"}
+2026-05-14T09:57:38.522864082Z PayloadTooLargeError: request entity too large
+2026-05-14T09:57:38.522873983Z     at readStream (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:5362:21)
+2026-05-14T09:57:38.522879113Z     at getRawBody (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:5343:16)
+2026-05-14T09:57:38.522883984Z     at read (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:15530:7)
+2026-05-14T09:57:38.522888644Z     at jsonParser (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:15666:9)
+2026-05-14T09:57:38.522894094Z     at Layer.handleRequest (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20292:21)
+2026-05-14T09:57:38.522898785Z     at trimPrefix (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20651:17)
+2026-05-14T09:57:38.522903725Z     at file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20622:13
+2026-05-14T09:57:38.522908846Z     at processParams (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20767:16)
+2026-05-14T09:57:38.522912336Z     at next (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:20616:9)
+2026-05-14T09:57:38.522915446Z     at cors2 (file:///opt/render/project/src/artifacts/api-server/dist/index.mjs:23784:11)
+2026-05-14T09:57:47.817383704Z {"level":30,"time":1778752667817,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":64,"method":"GET","url":"/gallery-4.png"},"res":{"statusCode":200},"responseTime":10,"msg":"request completed"}
+2026-05-14T09:57:48.992707993Z {"level":30,"time":1778752668992,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":67,"method":"GET","url":"/api/healthz"},"res":{"statusCode":304},"responseTime":0,"msg":"request completed"}
+2026-05-14T09:57:49.018122284Z {"level":30,"time":1778752669017,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":66,"method":"GET","url":"/api/messages"},"res":{"statusCode":304},"responseTime":36,"msg":"request completed"}
+2026-05-14T09:57:49.01901409Z {"level":30,"time":1778752669018,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":65,"method":"GET","url":"/api/settings"},"res":{"statusCode":200},"responseTime":40,"msg":"request completed"}
+2026-05-14T09:57:54.231695632Z {"level":30,"time":1778752674231,"pid":70,"hostname":"srv-d82oh8g3kofs73d14k8g-hibernate-6b6b46ccff-g6c6x","req":{"id":68,"method":"GET","url":"/gallery-5.png"},"res":{"statusCode":200},"responseTime":10,"msg":"request completed"}
