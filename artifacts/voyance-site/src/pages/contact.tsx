@@ -186,7 +186,7 @@ export default function Contact() {
                       </FormItem>
                     )} />
 
-                    <Button type="submit" disabled={submitContact.isPending} className="w-full min-h-14 h-auto py-4 rounded-none uppercase tracking-normal md:tracking-widest font-bold text-background bg-primary hover:bg-primary/90 text-sm md:text-base px-2">
+                    <Button type="submit" disabled={submitContact.isPending} className="w-full min-h-14 h-auto py-4 rounded-none uppercase tracking-normal md:tracking-widest font-bold text-background bg-primary hover:bg-primary/90 text-sm md:text-base px-4 whitespace-normal break-words text-center leading-snug">
                       {submitContact.isPending ? "Invocation en cours..." : "Invoquer l'aide du Maître"}
                     </Button>
                   </form>
