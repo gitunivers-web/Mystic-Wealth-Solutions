@@ -161,7 +161,7 @@ export default function Contact() {
                                 <SelectValue placeholder="Sélectionnez un rituel" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className="bg-card border-white/10 rounded-none">
+                            <SelectContent className="bg-card border-white/10 rounded-none max-h-60 overflow-y-auto">
                               {serviceOptions.map(opt => (
                                 <SelectItem key={opt} value={opt} className="rounded-none cursor-pointer hover:bg-primary/10">{opt}</SelectItem>
                               ))}
