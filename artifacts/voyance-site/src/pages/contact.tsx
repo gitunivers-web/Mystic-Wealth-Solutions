@@ -186,7 +186,7 @@ export default function Contact() {
                       </FormItem>
                     )} />
 
-                    <Button type="submit" disabled={submitContact.isPending} className="w-full h-14 rounded-none uppercase tracking-widest font-bold text-background bg-primary hover:bg-primary/90">
+                    <Button type="submit" disabled={submitContact.isPending} className="w-full h-14 rounded-none uppercase tracking-normal md:tracking-widest font-bold text-background bg-primary hover:bg-primary/90 text-sm md:text-base px-2">
                       {submitContact.isPending ? "Invocation en cours..." : "Invoquer l'aide du Maître"}
                     </Button>
                   </form>
