@@ -387,7 +387,7 @@ export default function Home() {
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link href="/contact"
-                  className="px-8 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors text-xs">
+                  className="px-8 py-4 bg-primary text-background font-bold tracking-normal md:tracking-widest uppercase hover:bg-primary/90 transition-colors text-xs whitespace-normal break-words text-center">
                   Consulter le Maître
                 </Link>
                 <Link href="/rituels"

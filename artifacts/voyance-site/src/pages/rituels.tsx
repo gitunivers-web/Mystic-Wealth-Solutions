@@ -212,7 +212,7 @@ export default function Rituels() {
           <p className="text-muted-foreground leading-relaxed mb-10">
             Tous les rituels sont réalisés dans la plus stricte confidentialité. {siteName} s'engage à ne jamais divulguer l'identité de ses clients ni la nature des rituels pratiqués. Votre secret est sacré.
           </p>
-          <Link href="/contact" className="px-10 py-4 bg-primary text-background font-bold tracking-widest uppercase hover:bg-primary/90 transition-colors">
+          <Link href="/contact" className="px-10 py-4 bg-primary text-background font-bold tracking-normal md:tracking-widest uppercase hover:bg-primary/90 transition-colors whitespace-normal break-words text-center inline-block">
             Consulter le Maître
           </Link>
         </div>
