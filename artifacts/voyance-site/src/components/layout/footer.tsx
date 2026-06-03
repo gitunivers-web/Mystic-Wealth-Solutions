@@ -19,12 +19,6 @@ export function Footer() {
               {settings.phone}
             </div>
           )}
-          {settings?.email && (
-            <div className="text-sm">
-              <span className="block text-primary uppercase tracking-widest mb-1 text-xs">Email</span>
-              {settings.email}
-            </div>
-          )}
           {settings?.address && (
             <div className="text-sm">
               <span className="block text-primary uppercase tracking-widest mb-1 text-xs">Cabinet</span>

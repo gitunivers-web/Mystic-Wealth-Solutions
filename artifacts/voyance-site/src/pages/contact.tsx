@@ -105,12 +105,6 @@ export default function Contact() {
                       <p className="text-lg text-white font-medium">{settings.whatsapp}</p>
                     </div>
                   )}
-                  {settings?.email && (
-                    <div>
-                      <p className="text-sm uppercase tracking-widest text-white/50 mb-1">Email</p>
-                      <p className="text-lg text-white font-medium">{settings.email}</p>
-                    </div>
-                  )}
                   {settings?.address && (
                     <div>
                       <p className="text-sm uppercase tracking-widest text-white/50 mb-1">Cabinet</p>
